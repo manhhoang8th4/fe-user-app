@@ -229,11 +229,12 @@ class CartProvider extends ChangeNotifier {
           "postal_code": postalCodeController.text,
           "country": "US"
         },
-        "amount":  getGrandTotal() * 100,
+        "amount": (getGrandTotal() * 100).round(),
         "currency": "usd",
         "description": "Your transaction description here"
       };
-      Response response = await service.addItem(endpointUrl: 'payment/stripe', itemData: paymentData);
+      Response response = await service.addItem(
+          endpointUrl: 'payment/stripe', itemData: paymentData);
       final data = await response.body;
       final paymentIntent = data['paymentIntent'];
       final ephemeralKey = data['ephemeralKey'];
@@ -241,9 +242,10 @@ class CartProvider extends ChangeNotifier {
       final publishableKey = data['publishableKey'];
 
       Stripe.publishableKey = publishableKey;
+      await Stripe.instance.applySettings();
       BillingDetails billingDetails = BillingDetails(
         email: _userProvider.getLoginUsr()?.name,
-        phone: '91234123908',
+        phone: '1234567890', // Replace with actual phone number
         name: _userProvider.getLoginUsr()?.name,
         address: Address(
             country: 'US',
@@ -252,8 +254,8 @@ class CartProvider extends ChangeNotifier {
             line2: stateController.text,
             postalCode: postalCodeController.text,
             state: stateController.text
-          // Other address details
-        ),
+            // Other address details
+            ),
         // Other billing details
       );
       await Stripe.instance.initPaymentSheet(

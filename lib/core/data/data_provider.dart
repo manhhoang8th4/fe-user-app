@@ -1,6 +1,9 @@
 import 'dart:convert';
 // import 'dart:ffi';
-
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' hide Category;
 import 'package:get/get.dart';
@@ -268,4 +271,32 @@ class DataProvider extends ChangeNotifier {
     //? Return the discount percentage as an integer
     return discount;
   }
+  Future<ApiResponse<T>> uploadFile<T>({
+  required String endpointUrl,   // ví dụ '/users/upload-avatar/123'
+  required String fileField,     // 'avatar'
+  required String filePath,      // đường dẫn local
+  Map<String, String>? fields,   // field text kèm theo (nếu cần)
+  T Function(Object?)? fromJson, // parse data → model (tùy chọn)
+}) async {
+  final uri = Uri.parse('${service.baseUrl}$endpointUrl');
+
+  final request = http.MultipartRequest('POST', uri)
+    ..headers.addAll({
+      'Accept': 'application/json',          // KHÔNG còn Authorization
+    })
+    ..fields.addAll(fields ?? {})
+    ..files.add(
+      await http.MultipartFile.fromPath(
+        fileField,
+        filePath,
+        contentType: MediaType('image', 'jpeg'), // đổi sang 'png' nếu cần
+      ),
+    );
+
+  final streamed  = await request.send();
+  final respBody  = await streamed.stream.bytesToString();
+  final jsonBody  = jsonDecode(respBody) as Map<String, dynamic>;
+
+  return ApiResponse<T>.fromJson(jsonBody, fromJson);
+}
 }
