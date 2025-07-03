@@ -191,13 +191,19 @@ class CartProvider extends ChangeNotifier {
   }
 
   //submitOrder
-  submitOrder(BuildContext context) async {
-    if (selectedPaymentOption == 'cod') {
-      addOrder(context);
-    } else {
-      await stripePayment(operation: () {
-        addOrder(Get.context!);
-      });
+  Future<void> submitOrder(BuildContext context) async {
+    try {
+      if (selectedPaymentOption == 'cod') {
+        await addOrder(context);
+      } else {
+        await stripePayment(
+          operation: () => addOrder(context),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Order error: $e')),
+      );
     }
   }
 
@@ -217,89 +223,102 @@ class CartProvider extends ChangeNotifier {
     countryController.text = box.read(COUNTRY_KEY) ?? '';
   }
 
-  Future<void> stripePayment({required void Function() operation}) async {
+  Future<void> stripePayment({
+    required VoidCallback operation, // callback sau khi thanh toán OK
+  }) async {
     try {
-      Map<String, dynamic> paymentData = {
-        "email": _userProvider.getLoginUsr()?.name,
-        "name": _userProvider.getLoginUsr()?.name,
-        "address": {
-          "line1": streetController.text,
-          "city": cityController.text,
-          "state": stateController.text,
-          "postal_code": postalCodeController.text,
-          "country": "US"
+      //------------------------------------------------------------------
+      // 0) Chuẩn bị dữ liệu gửi backend
+      //------------------------------------------------------------------
+      final orderMap = {
+        'email': _userProvider.getLoginUsr()?.name, // ⚠ email phải đúng
+        'name': _userProvider.getLoginUsr()?.name,
+        'address': {
+          'line1': streetController.text,
+          'city': cityController.text,
+          'state': stateController.text,
+          'postal_code': postalCodeController.text,
+          'country': 'US',
         },
-        "amount": (getGrandTotal() * 100).round(),
-        "currency": "usd",
-        "description": "Your transaction description here"
+        'amount': (getGrandTotal() * 100).round(), // phải >0
+        'currency': 'usd',
+        'description': 'Your transaction description here',
       };
-      Response response = await service.addItem(
-          endpointUrl: 'payment/stripe', itemData: paymentData);
-      final data = await response.body;
-      final paymentIntent = data['paymentIntent'];
-      final ephemeralKey = data['ephemeralKey'];
-      final customer = data['customer'];
-      final publishableKey = data['publishableKey'];
+      //---------------------------------------------------------------
+      // 1) Gọi backend, parse JSON
+      //---------------------------------------------------------------
+      final resp = await service.addItem(
+        endpointUrl: 'payment/stripe',
+        itemData: orderMap,
+      );
+      final Map<String, dynamic> data =
+          resp.body is String ? jsonDecode(resp.body) : resp.body;
+      debugPrint('🔑 From BE: $data');
 
+      final publishableKey = data['publishableKey'] as String;
+      final paymentIntent = data['paymentIntent'] as String;
+      final customerId = data['customer'] as String;
+      final ephemeralKey = data['ephemeralKey'] as String;
+
+      //----------------------------------------------------------------
+      // 2) Stripe config
+      //----------------------------------------------------------------
       Stripe.publishableKey = publishableKey;
       await Stripe.instance.applySettings();
-      BillingDetails billingDetails = BillingDetails(
-        email: _userProvider.getLoginUsr()?.name,
-        phone: '1234567890', // Replace with actual phone number
-        name: _userProvider.getLoginUsr()?.name,
-        address: Address(
-            country: 'US',
-            city: cityController.text,
-            line1: streetController.text,
-            line2: stateController.text,
-            postalCode: postalCodeController.text,
-            state: stateController.text
-            // Other address details
-            ),
-        // Other billing details
-      );
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          customFlow: false,
-          merchantDisplayName: 'MOBIZATE',
-          paymentIntentClientSecret: paymentIntent,
-          customerEphemeralKeySecret: ephemeralKey,
-          customerId: customer,
-          style: ThemeMode.light,
-          billingDetails: billingDetails,
-          // googlePay: const PaymentSheetGooglePay(
-          //   merchantCountryCode: 'US',
-          //   currencyCode: 'usd',
-          //   testEnv: true,
-          // ),
-          // applePay: const PaymentSheetApplePay(merchantCountryCode: 'US')
-        ),
-      );
 
-      await Stripe.instance.presentPaymentSheet().then((value) {
-        log('payment success');
-        //? do the success operation
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          const SnackBar(content: Text('Payment Success')),
+      //----------------------------------------------------------------
+      // 3) Init PaymentSheet
+      //----------------------------------------------------------------
+      try {
+        await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: paymentIntent,
+            customerEphemeralKeySecret: ephemeralKey,
+            customerId: customerId,
+            merchantDisplayName: 'MOBIZATE',
+            billingDetails: BillingDetails(
+              email: _userProvider.getLoginUsr()?.name,
+              name: _userProvider.getLoginUsr()?.name,
+              phone: '1234567890',
+              address: Address(
+                country: 'US',
+                city: cityController.text,
+                line1: streetController.text,
+                line2: stateController.text,
+                postalCode: postalCodeController.text,
+                state: stateController.text,
+              ),
+            ),
+            style: ThemeMode.light,
+          ),
         );
-        operation();
-      }).onError((error, stackTrace) {
-        if (error is StripeException) {
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(content: Text('${error.error.localizedMessage}')),
-          );
-        } else {
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(content: Text('Stripe Error: $error')),
-          );
-        }
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+        debugPrint('✅ initPaymentSheet DONE');
+      } on StripeException catch (e) {
+        debugPrint('❌ initPaymentSheet ERR: ${e.error.localizedMessage}');
+        _snack('Init‑sheet: ${e.error.localizedMessage}');
+        return;
+      }
+
+      //----------------------------------------------------------------
+      // 4) Present PaymentSheet
+      //----------------------------------------------------------------
+      try {
+        await Stripe.instance.presentPaymentSheet();
+        debugPrint('🎉 PAY SUCCESS');
+        _snack('Payment success');
+        operation(); // gọi callback
+      } on StripeException catch (e) {
+        debugPrint('❌ presentPaymentSheet ERR: ${e.error.localizedMessage}');
+        _snack('PaymentSheet: ${e.error.localizedMessage}');
+      }
+    } catch (e, s) {
+      debugPrint('❌ OUTER error: $e\n$s');
+      _snack('Exception: $e');
     }
   }
+
+  void _snack(String msg) => ScaffoldMessenger.of(Get.context!)
+      .showSnackBar(SnackBar(content: Text(msg)));
 
   Future<void> razorpayPayment({required void Function() operation}) async {
     try {
