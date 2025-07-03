@@ -4,15 +4,17 @@ class User {
   String? password;
   String? createdAt;
   String? updatedAt;
+  String? playerId;
   int? iV;
 
   User(
       {this.sId,
-        this.name,
-        this.password,
-        this.createdAt,
-        this.updatedAt,
-        this.iV});
+      this.name,
+      this.password,
+      this.createdAt,
+      this.updatedAt,
+      this.playerId,
+      this.iV});
 
   User.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -20,6 +22,7 @@ class User {
     password = json['password'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    playerId = json['playerId'];
     iV = json['__v'];
   }
 
@@ -30,6 +33,7 @@ class User {
     data['password'] = this.password;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
+    data['playerId'] = playerId;
     data['__v'] = this.iV;
     return data;
   }

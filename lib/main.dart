@@ -1,10 +1,12 @@
+import 'dart:convert';
+import 'dart:ui' show PointerDeviceKind;
 import 'package:flutter/material.dart';
-import 'package:flutter_cart/cart.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' show PointerDeviceKind;
 
 import 'core/data/data_provider.dart';
 import 'models/user.dart';
@@ -22,41 +24,34 @@ import 'utility/extensions.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  var cart = FlutterCart();
+  await FlutterCart().initializeCart(isPersistenceSupportEnabled: true);
 
-  // Khởi tạo OneSignal
-  OneSignal.initialize("53e9a724-3405-47e3-8e5d-180da7d4ee2f");
+  // OneSignal init
+  OneSignal.initialize('53e9a724-3405-47e3-8e5d-180da7d4ee2f');
   OneSignal.Notifications.requestPermission(true);
-
-  await cart.initializeCart(isPersistenceSupportEnabled: true);
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => DataProvider()),
+        ChangeNotifierProvider(create: (_) => DataProvider()),
+        ChangeNotifierProvider(create: (c) => UserProvider(c.dataProvider)),
+        ChangeNotifierProvider(create: (c) => ProfileProvider(c.dataProvider)),
         ChangeNotifierProvider(
-            create: (context) => UserProvider(context.dataProvider)),
+            create: (c) => ProductByCategoryProvider(c.dataProvider)),
         ChangeNotifierProvider(
-            create: (context) => ProfileProvider(context.dataProvider)),
-        ChangeNotifierProvider(
-            create: (context) => ProductByCategoryProvider(context.dataProvider)),
-        ChangeNotifierProvider(
-            create: (context) => ProductDetailProvider(context.dataProvider)),
-        ChangeNotifierProvider(
-            create: (context) => CartProvider(context.userProvider)),
-        ChangeNotifierProvider(
-            create: (context) => FavoriteProvider(context.dataProvider)),
+            create: (c) => ProductDetailProvider(c.dataProvider)),
+        ChangeNotifierProvider(create: (c) => CartProvider(c.userProvider)),
+        ChangeNotifierProvider(create: (c) => FavoriteProvider(c.dataProvider)),
       ],
       child: const MyApp(),
     ),
   );
 }
 
-// Controller để quản lý dark mode
+/* ---------------- dark‑mode controller ---------------- */
 class ThemeController extends GetxController {
   final _box = GetStorage();
   final _key = 'isDarkMode';
-
   RxBool isDarkMode = false.obs;
 
   @override
@@ -76,12 +71,75 @@ class ThemeController extends GetxController {
 
 final ThemeController themeController = Get.put(ThemeController());
 
-class MyApp extends StatelessWidget {
+/* ---------------- main app ---------------- */
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  static const String _baseUrl = String.fromEnvironment(
+    'API_BASE',
+    defaultValue: 'http://10.0.2.2:3000',
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _syncPlayerId());
+  }
+
+  Future<void> _syncPlayerId() async {
+    /// đảm bảo widget còn mounted
+    if (!mounted) return;
+
+    final user = context.userProvider.getLoginUsr();
+    if (user == null) return;
+
+    // lấy playerId, thử tối đa 5 lần
+    const int maxRetry = 5;
+    const delay = Duration(seconds: 1);
+    String? playerId;
+
+    for (int i = 0; i < maxRetry; i++) {
+      playerId = OneSignal.User.pushSubscription.id;
+      if (playerId != null) break;
+      debugPrint('⏳ OneSignal chưa sẵn sàng... (${i + 1}/$maxRetry)');
+      await Future.delayed(delay);
+    }
+
+    if (playerId == null) {
+      debugPrint('❌ playerId vẫn null sau $maxRetry lần thử');
+      return;
+    }
+
+    if (playerId == user.playerId) {
+      debugPrint('✅ playerId không đổi – bỏ qua cập nhật');
+      return;
+    }
+
+    try {
+      final res = await http.put(
+        Uri.parse('$_baseUrl/users/${user.sId}/player-id'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'playerId': playerId}),
+      );
+
+      if (res.statusCode == 200) {
+        debugPrint('✅ playerId cập nhật thành công: $playerId');
+      } else {
+        debugPrint('⚠️ PUT trả về ${res.statusCode}: ${res.body}');
+      }
+    } catch (e) {
+      debugPrint('❌ Lỗi khi cập nhật playerId: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    User? loginUser = context.userProvider.getLoginUsr();
+    final loginUser = context.userProvider.getLoginUsr();
 
     return Obx(() => GetMaterialApp(
           debugShowCheckedModeBanner: false,
@@ -89,9 +147,10 @@ class MyApp extends StatelessWidget {
             dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
           ),
           theme: AppTheme.lightAppTheme,
-          darkTheme: AppTheme.darkAppTheme, // <-- Thêm theme tối ở đây
+          darkTheme: AppTheme.darkAppTheme,
           themeMode: themeController.theme,
-          home: loginUser?.sId == null ? const LoginScreen() : const HomeScreen(),
+          home:
+              loginUser?.sId == null ? const LoginScreen() : const HomeScreen(),
         ));
   }
 }
