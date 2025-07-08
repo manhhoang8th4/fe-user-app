@@ -121,7 +121,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               onPressed: () {
                 context.userProvider.logOutUser();
-                Get.offAll(const LoginScreen());
+                Get.offAll( LoginScreen());
               },
               child: const Text('Logout', style: TextStyle(fontSize: 18)),
             ),

@@ -149,6 +149,6 @@ class UserProvider extends ChangeNotifier {
 
   logOutUser() {
     box.remove(USER_INFO_BOX);
-    Get.offAll(const LoginScreen());
+    Get.offAll( LoginScreen());
   }
 }

@@ -150,7 +150,7 @@ class _MyAppState extends State<MyApp> {
           darkTheme: AppTheme.darkAppTheme,
           themeMode: themeController.theme,
           home:
-              loginUser?.sId == null ? const LoginScreen() : const HomeScreen(),
+              loginUser?.sId == null ?   LoginScreen() : const HomeScreen(),
         ));
   }
 }

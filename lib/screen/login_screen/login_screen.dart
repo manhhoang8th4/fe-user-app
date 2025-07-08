@@ -1,88 +1,178 @@
-import 'package:e_commerce_flutter/utility/extensions.dart';
-import '../../utility/app_color.dart';
+import 'package:e_commerce_flutter/screen/login_screen/provider/user_provider.dart';
+import 'package:e_commerce_flutter/screen/login_screen/signin_screen.dart';
+import 'package:e_commerce_flutter/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import '../home_screen.dart';
+import 'package:provider/provider.dart';
+import 'components/my_button.dart';
+import 'components/my_textfield.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void signUserIn(BuildContext context) async {
+    final username = usernameController.text.trim();
+    final password = passwordController.text.trim();
+
+    final loginData = LoginData(name: username, password: password);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final error = await userProvider.login(loginData);
+
+    if (error == null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error)),
+      );
+    }
+  }
+
+  void signInWithGoogle(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.loginWithGoogle();
+    if (userProvider.getLoginUsr()?.sId != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Google login failed')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          FlutterLogin(
-            loginAfterSignUp: false,
-            logo: const AssetImage('assets/images/logo.png'),
-            onLogin: (LoginData logindata) {
-              return context.userProvider.login(logindata);
-            },
-            onSignup: (SignupData data) {
-              return context.userProvider.register(data);
-            },
-            onSubmitAnimationCompleted: () {
-              if (context.userProvider.getLoginUsr()?.sId != null) {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const HomeScreen(),
-                ));
-              } else {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ));
-              }
-            },
-            onRecoverPassword: (_) => null,
-            hideForgotPasswordButton: true,
-            theme: LoginTheme(
-              primaryColor: AppColor.darkGrey,
-              accentColor: AppColor.darkOrange,
-              buttonTheme: const LoginButtonTheme(
-                backgroundColor: AppColor.darkOrange,
-              ),
-              cardTheme: const CardTheme(
-                color: Colors.white,
-                surfaceTintColor: Colors.white,
-              ),
-              titleStyle: const TextStyle(color: Colors.black),
-            ),
-          ),
-
-          // 👇 Google Login Button
-          Positioned(
-            bottom: 270,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: ElevatedButton.icon(
-                icon: Image.network(
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png',
-                  height: 24,
-                ),
-                label: const Text("Đăng nhập với Google"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black87,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    side: const BorderSide(color: Colors.grey),
+      backgroundColor: Colors.grey[200],
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+            child: Column(
+              children: [
+                const Icon(Icons.lock_outline, size: 100, color: Colors.black87),
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome back!',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.bold,
                   ),
-                  elevation: 4,
                 ),
-                onPressed: () async {
-                  await context.userProvider.loginWithGoogle();
-                  if (context.userProvider.getLoginUsr()?.sId != null) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (_) => const HomeScreen()),
-                    );
-                  }
-                },
-              ),
+                const SizedBox(height: 30),
+
+                // Username
+                MyTextField(
+                  controller: usernameController,
+                  hintText: 'Username',
+                  obscureText: false,
+                ),
+                const SizedBox(height: 15),
+
+                // Password
+                MyTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),
+                const SizedBox(height: 10),
+
+                // Forgot password
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 25),
+
+                // Sign In button
+                MyButton(
+                  text: "Sign In",
+                  onTap: () => signUserIn(context),
+                ),
+                const SizedBox(height: 40),
+
+                // Or continue with
+                Row(
+                  children: [
+                    Expanded(
+                      child: Divider(thickness: 1, color: Colors.grey[400]),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text("Or continue with"),
+                    ),
+                    Expanded(
+                      child: Divider(thickness: 1, color: Colors.grey[400]),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+
+                // Social login
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () => signInWithGoogle(context),
+                      child: const CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage('assets/images/google.png'),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    const CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage('assets/images/apple.png'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+
+                // Register now
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Not a member?',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => SignInScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
