@@ -17,7 +17,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class UserProvider extends ChangeNotifier {
   HttpService service = HttpService();
-  final DataProvider _dataProvider;
+  final DataProvider? _dataProvider;
   final box = GetStorage();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],

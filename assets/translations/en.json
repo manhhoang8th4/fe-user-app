@@ -1,0 +1,61 @@
+{
+    "select_language": "Select Language",
+  "hello": "Hello",
+  "start": "Get Started",
+  "home": "Home",
+  "favorite": "Favorite",
+  "cart": "Cart",
+  "profile": "Profile",
+  "buy_now": "Buy Now",
+  "detail": "Detail",
+  "vietnamese": "Vietnamese",
+  "english": "English",
+    "my_account": "My Account",
+  "dark_mode": "Dark Mode",
+  "choose_new_photo": "Choose new photo",
+  "remove_current_photo": "Remove current photo",
+  "logout": "Logout",
+  "language": "Language",
+  "my_orders": "My Orders",
+  "my_addresses": "My Addresses",
+  "services": "Services",
+  "apple_warranty": "Apple Warranty",
+  "exchange_old_new": "Exchange Old for New",
+  "installment": "Installment",
+  "newsfeed": "Newsfeed",
+  "technology_news": "Technology News",
+  "promotion": "Promotion",
+   "apple_warranty_policy_title": "Apple Warranty Policy at ShopDunk",
+  "apple_warranty_policy_description": "Apple products are warranted according to the global official warranty policy. ShopDunk supports checking warranty status and sending the device for warranty on behalf of customers with a quick and transparent process.",
+  "apple_warranty_services": "Supported services:",
+  "check_apple_warranty": "• Check Apple warranty status",
+  "guide_official_warranty": "• Guide for official warranty submission",
+  "repair_apple_device": "• Battery replacement and repair of Apple devices",
+  "warranty_consultation": "• 24/7 warranty consultation",
+  "call_now": "Call now",
+  "send_sms": "Send SMS",
+  "chat_zalo": "Chat via Zalo",
+  "exchange_old_new_title": "Exchange Old for New",
+  "upgrade_to_iphone_16": "Upgrade to iPhone 16 series",
+  "iphone": "iPhone",
+  "ipad": "iPad",
+  "macbook": "Macbook",
+  "new_price": "New Price",
+  "old_price": "Old Device Price",
+  "all": "All",
+  "original_price": "Original price",
+  "promotion_price": "Promotion",
+  "discount_percent": "Discount {percent}%",
+  "Book": "Book",
+  "Fashion": "Fashion",
+  "Electronics": "Electronics"
+
+
+
+
+
+
+
+  
+
+}

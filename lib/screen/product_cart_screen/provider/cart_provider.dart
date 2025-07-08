@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:e_commerce_flutter/utility/utility_extention.dart';
-
 import '../../../models/coupon.dart';
 import '../../login_screen/provider/user_provider.dart';
 import '../../../services/http_services.dart';

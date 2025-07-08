@@ -20,15 +20,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppBarActionButton(
-              icon: Icons.menu,
-              onPressed: () {
-                final box = GetStorage();
-                Map<String, dynamic>? userJson = box.read(USER_INFO_BOX);
-                User? userLogged = User.fromJson(userJson ?? {});
-                Scaffold.of(context).openDrawer();
-              },
+            // ✅ SỬA chỗ này
+            Builder(
+              builder: (context) => AppBarActionButton(
+                icon: Icons.menu,
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
             ),
+
             Expanded(
               child: CustomSearchBar(
                 controller: TextEditingController(),
