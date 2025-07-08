@@ -154,3 +154,65 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 }
+class FancyDarkModeSwitch extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const FancyDarkModeSwitch({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onChanged(!value),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 600), // Tăng thời gian
+        curve: Curves.easeInOutCubic,                // Thêm hiệu ứng mượt
+        width: 80,
+        height: 40,
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          gradient: value
+              ? const LinearGradient(colors: [Color(0xFF232526), Color(0xFF414345)])
+              : const LinearGradient(colors: [Color(0xFFFFE000), Color(0xFF799F0C)]),
+          boxShadow: [
+            if (value)
+              const BoxShadow(color: Colors.black45, blurRadius: 6, offset: Offset(0, 3))
+            else
+              const BoxShadow(color: Colors.orangeAccent, blurRadius: 6, offset: Offset(0, 3))
+          ],
+        ),
+        child: Stack(
+          children: [
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.easeInOutCubic, // Thêm curve chuyển động cho vị trí icon
+              alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeInOutCubic, // Mượt khi co giãn
+                width: 32,
+                height: 32,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(
+                    value ? Icons.nightlight_round : Icons.wb_sunny,
+                    color: value ? Colors.black : Colors.orange,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

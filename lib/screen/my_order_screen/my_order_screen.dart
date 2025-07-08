@@ -1,4 +1,5 @@
 import 'package:e_commerce_flutter/models/user.dart';
+import 'order_detail_screen.dart';
 
 import '../../core/data/data_provider.dart';
 import '../tracking_screen/tracking_screen.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../widget/order_tile.dart';
+
 
 
 class MyOrderScreen extends StatelessWidget {
@@ -35,11 +37,14 @@ class MyOrderScreen extends StatelessWidget {
                 items: '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} Items'  ,
                 date: order.orderDate ?? '',
                 status: order.orderStatus ?? 'pending',
-                onTap: (){
-                  if(order.orderStatus == 'shipped'){
-                    Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
-                  }
-                },
+              onTap: () {
+  if (order.orderStatus == 'shipped') {
+    Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
+  } else {
+    Get.to(OrderDetailScreen(order: order)); // Thêm dòng này
+  }
+},
+
               );
             },
           );
