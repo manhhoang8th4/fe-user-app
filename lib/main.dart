@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui' show PointerDeviceKind;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:get/get.dart';
@@ -23,27 +24,30 @@ import 'utility/extensions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized(); // localization init
   await GetStorage.init();
   await FlutterCart().initializeCart(isPersistenceSupportEnabled: true);
 
-  // OneSignal init
   OneSignal.initialize('53e9a724-3405-47e3-8e5d-180da7d4ee2f');
   OneSignal.Notifications.requestPermission(true);
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => DataProvider()),
-        ChangeNotifierProvider(create: (c) => UserProvider(c.dataProvider)),
-        ChangeNotifierProvider(create: (c) => ProfileProvider(c.dataProvider)),
-        ChangeNotifierProvider(
-            create: (c) => ProductByCategoryProvider(c.dataProvider)),
-        ChangeNotifierProvider(
-            create: (c) => ProductDetailProvider(c.dataProvider)),
-        ChangeNotifierProvider(create: (c) => CartProvider(c.userProvider)),
-        ChangeNotifierProvider(create: (c) => FavoriteProvider(c.dataProvider)),
-      ],
-      child: const MyApp(),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('vi')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => DataProvider()),
+          ChangeNotifierProvider(create: (c) => UserProvider(c.dataProvider)),
+          ChangeNotifierProvider(create: (c) => ProfileProvider(c.dataProvider)),
+          ChangeNotifierProvider(create: (c) => ProductByCategoryProvider(c.dataProvider)),
+          ChangeNotifierProvider(create: (c) => ProductDetailProvider(c.dataProvider)),
+          ChangeNotifierProvider(create: (c) => CartProvider(c.userProvider)),
+          ChangeNotifierProvider(create: (c) => FavoriteProvider(c.dataProvider)),
+        ],
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -92,13 +96,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _syncPlayerId() async {
-    /// đảm bảo widget còn mounted
     if (!mounted) return;
 
     final user = context.userProvider.getLoginUsr();
     if (user == null) return;
 
-    // lấy playerId, thử tối đa 5 lần
     const int maxRetry = 5;
     const delay = Duration(seconds: 1);
     String? playerId;
@@ -149,8 +151,13 @@ class _MyAppState extends State<MyApp> {
           theme: AppTheme.lightAppTheme,
           darkTheme: AppTheme.darkAppTheme,
           themeMode: themeController.theme,
-          home:
-              loginUser?.sId == null ?   LoginScreen() : const HomeScreen(),
+
+          // ✅ Localization
+          locale: context.locale,
+          supportedLocales: context.supportedLocales,
+          localizationsDelegates: context.localizationDelegates,
+
+          home: loginUser?.sId == null ? LoginScreen() : const HomeScreen(),
         ));
   }
 }

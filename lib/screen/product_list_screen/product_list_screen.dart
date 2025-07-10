@@ -13,48 +13,49 @@ class ProductListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: const CustomAppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Hello Sina",
-                  style: Theme.of(context).textTheme.displayLarge,
-                ),
-                Text(
-                  "Lets gets somethings?",
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const PosterSection(),
-                Text(
-                  "Top categories",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 5),
-                Consumer<DataProvider>(
-                  builder: (context, dataProvider, child) {
-                    return CategorySelector(
-                      categories: dataProvider.categories,
-                    );
-                  },
-                ),
-                Consumer<DataProvider>(
-                  builder: (context, dataProvider, child) {
-                    return ProductGridView(
-                      items: dataProvider.products,
-                    );
-                  },
-                ),
-              ],
+    return SafeArea(
+      child: Column(
+        children: [
+          const CustomAppBar(), // ✅ Gọi app bar như widget thường
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hello Sina",
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                  Text(
+                    "Let's get somethings?",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const PosterSection(),
+                  Text(
+                    "Top categories",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 5),
+                  Consumer<DataProvider>(
+                    builder: (context, dataProvider, child) {
+                      return CategorySelector(
+                        categories: dataProvider.categories,
+                      );
+                    },
+                  ),
+                  Consumer<DataProvider>(
+                    builder: (context, dataProvider, child) {
+                      return ProductGridView(
+                        items: dataProvider.products,
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
