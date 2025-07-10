@@ -16,8 +16,6 @@
   "remove_current_photo": "Xoá ảnh hiện tại",
   "logout": "Đăng xuất",
   "language": "Ngôn ngữ",
-  "my_orders": "Đơn hàng",
-  "my_addresses": "Địa chỉ",
   "services": "Dịch vụ",
   "apple_warranty": "Bảo hành Apple",
   "exchange_old_new": "Thu cũ đổi mới",
@@ -75,5 +73,14 @@
   "all": "Tất cả",
   "original_price": "Giá gốc",
   "promotion_price": "Ưu đãi",
-  "discount_percent": "Giảm {percent}%"
+  "discount_percent": "Giảm {percent}%",
+  "forgot_password": {
+    "title": "Quên mật khẩu",
+    "instruction": "Nhập địa chỉ email của bạn để đặt lại mật khẩu",
+    "email": "Email",
+    "submit": "Gửi yêu cầu",
+    "error_empty": "Vui lòng nhập email",
+    "error_invalid": "Email không hợp lệ",
+    "sent_to": "Link đặt lại mật khẩu đã được gửi đến {0}"
+  }
 }
