@@ -223,14 +223,11 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> stripePayment({
-    required VoidCallback operation, // callback sau khi thanh toán OK
+    required VoidCallback operation,
   }) async {
     try {
-      //------------------------------------------------------------------
-      // 0) Chuẩn bị dữ liệu gửi backend
-      //------------------------------------------------------------------
       final orderMap = {
-        'email': _userProvider.getLoginUsr()?.name, // ⚠ email phải đúng
+        'email': _userProvider.getLoginUsr()?.email,
         'name': _userProvider.getLoginUsr()?.name,
         'address': {
           'line1': streetController.text,
@@ -243,9 +240,6 @@ class CartProvider extends ChangeNotifier {
         'currency': 'usd',
         'description': 'Your transaction description here',
       };
-      //---------------------------------------------------------------
-      // 1) Gọi backend, parse JSON
-      //---------------------------------------------------------------
       final resp = await service.addItem(
         endpointUrl: 'payment/stripe',
         itemData: orderMap,
@@ -258,16 +252,8 @@ class CartProvider extends ChangeNotifier {
       final paymentIntent = data['paymentIntent'] as String;
       final customerId = data['customer'] as String;
       final ephemeralKey = data['ephemeralKey'] as String;
-
-      //----------------------------------------------------------------
-      // 2) Stripe config
-      //----------------------------------------------------------------
       Stripe.publishableKey = publishableKey;
       await Stripe.instance.applySettings();
-
-      //----------------------------------------------------------------
-      // 3) Init PaymentSheet
-      //----------------------------------------------------------------
       try {
         await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
@@ -297,10 +283,6 @@ class CartProvider extends ChangeNotifier {
         _snack('Init‑sheet: ${e.error.localizedMessage}');
         return;
       }
-
-      //----------------------------------------------------------------
-      // 4) Present PaymentSheet
-      //----------------------------------------------------------------
       try {
         await Stripe.instance.presentPaymentSheet();
         debugPrint('🎉 PAY SUCCESS');

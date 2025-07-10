@@ -1,5 +1,10 @@
 import 'package:e_commerce_flutter/models/user.dart';
 import 'order_detail_screen.dart';
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dfe800f5937e0fa3896eb626cb9b5dd29100a054
 import '../../core/data/data_provider.dart';
 import '../tracking_screen/tracking_screen.dart';
 import '../../utility/app_color.dart';
@@ -8,17 +13,28 @@ import '../../utility/utility_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 import '../../widget/order_tile.dart';class MyOrderScreen extends StatelessWidget {
+=======
+import '../../widget/order_tile.dart';
+
+class MyOrderScreen extends StatelessWidget {
+>>>>>>> dfe800f5937e0fa3896eb626cb9b5dd29100a054
   const MyOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     context.dataProvider.getAllOrderByUser(context.userProvider.getLoginUsr());
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(  
+        title: const Text(
           "My Orders",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColor.darkOrange),
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppColor.darkOrange,
+          ),
         ),
       ),
       body: Consumer<DataProvider>(
@@ -27,19 +43,25 @@ import '../../widget/order_tile.dart';class MyOrderScreen extends StatelessWidge
             itemCount: context.dataProvider.orders.length,
             itemBuilder: (context, index) {
               final order = context.dataProvider.orders[index];
-              return OrderTile(
-                paymentMethod: order.paymentMethod ?? '',
-                items: '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} Items'  ,
-                date: order.orderDate ?? '',
-                status: order.orderStatus ?? 'pending',
-              onTap: () {
-  if (order.orderStatus == 'shipped') {
-    Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
-  } else {
-    Get.to(OrderDetailScreen(order: order)); // Thêm dòng này
-  }
-},
-
+              return GestureDetector(
+                onTap: () {
+                  // Bấm 1 lần thì luôn mở chi tiết đơn hàng
+                  Get.to(OrderDetailScreen(order: order));
+                },
+                onDoubleTap: () {
+                  // Nếu đơn hàng đã shipped thì bấm 2 lần mở trang tracking
+                  if (order.orderStatus == 'shipped') {
+                    Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
+                  }
+                },
+                child: OrderTile(
+                  paymentMethod: order.paymentMethod ?? '',
+                  items:
+                      '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} Items',
+                  date: order.orderDate ?? '',
+                  status: order.orderStatus ?? 'pending',
+                  onTap: null, // bỏ onTap ở đây để GestureDetector xử lý
+                ),
               );
             },
           );

@@ -10,13 +10,13 @@ class OrderDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA), // nền sáng hiện đại
+      backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
         iconTheme: const IconThemeData(color: AppColor.darkOrange),
         title: const Text(
-          'Chi tiết đơn hàng',
+          'Order Details',
           style: TextStyle(
             color: AppColor.darkOrange,
             fontSize: 22,
@@ -30,30 +30,68 @@ class OrderDetailScreen extends StatelessWidget {
           _buildSectionCard(
             context,
             icon: Icons.receipt_long,
-            title: 'Thông tin đơn hàng',
+            title: 'Order Information',
             children: [
-              _infoRow('Mã đơn', order.sId ?? 'N/A'),
-              _infoRow('Trạng thái', order.orderStatus ?? 'N/A'),
-              _infoRow('Ngày đặt', order.orderDate ?? 'N/A'),
+              _infoRow('Order ID', order.sId ?? 'N/A'),
+              _infoRow('Status', order.orderStatus ?? 'N/A'),
+              _infoRow('Order Date', order.orderDate ?? 'N/A'),
+            ],
+          ),
+          _buildSectionCard(
+            context,
+            icon: Icons.shopping_bag,
+            title: 'Purchased Products',
+            children: [
+              ...?order.items?.map(
+                (item) => Container(
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.productName ?? '',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      const SizedBox(height: 4),
+                      Text('Quantity:  ${item.quantity}',
+                          style: const TextStyle(fontSize: 16)),
+                      Text('Price:        ${item.price?.toStringAsFixed(0)}₫',
+                          style: const TextStyle(fontSize: 16)),
+                      Text('Variant:     ${item.variant ?? 'None'}',
+                          style: const TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
           _buildSectionCard(
             context,
             icon: Icons.payment,
-            title: 'Thanh toán',
+            title: 'Payment',
             children: [
-              _infoRow('Phương thức', order.paymentMethod ?? 'N/A'),
-              _infoRow('Tạm tính', '${order.orderTotal?.subtotal?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRow('Giảm giá', '-${order.orderTotal?.discount?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRowBold('Tổng cộng', '${order.orderTotal?.total?.toStringAsFixed(0) ?? '0'}₫', color: Colors.redAccent),
+              _infoRow('Method', order.paymentMethod ?? 'N/A'),
+              _infoRow('Subtotal',
+                  '${order.orderTotal?.subtotal?.toStringAsFixed(0) ?? '0'}₫'),
+              _infoRow('Discount',
+                  '-${order.orderTotal?.discount?.toStringAsFixed(0) ?? '0'}₫'),
+              _infoRowBold('Total',
+                  '${order.orderTotal?.total?.toStringAsFixed(0) ?? '0'}₫',
+                  color: Colors.redAccent),
               if (order.couponCode != null)
-                _infoRow('Mã giảm giá', '${order.couponCode!.couponCode} (${order.couponCode!.discountAmount}% ${order.couponCode!.discountType})'),
+                _infoRow('Coupon Code',
+                    '${order.couponCode!.couponCode} (${order.couponCode!.discountAmount}% ${order.couponCode!.discountType})'),
             ],
           ),
           _buildSectionCard(
             context,
             icon: Icons.location_on,
-            title: 'Địa chỉ giao hàng',
+            title: 'Shipping Address',
             children: [
               Text(
                 '${order.shippingAddress?.street}, ${order.shippingAddress?.city}, ${order.shippingAddress?.state}',
@@ -65,34 +103,8 @@ class OrderDetailScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 4),
-              Text('SĐT: ${order.shippingAddress?.phone}', style: const TextStyle(fontSize: 16)),
-            ],
-          ),
-          _buildSectionCard(
-            context,
-            icon: Icons.shopping_bag,
-            title: 'Sản phẩm đã mua',
-            children: [
-              ...?order.items?.map(
-                (item) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.productName ?? '', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                      const SizedBox(height: 4),
-                      Text('Số lượng: ${item.quantity}'),
-                      Text('Giá: ${item.price?.toStringAsFixed(0)}₫'),
-                      Text('Phân loại: ${item.variant ?? 'Không có'}'),
-                    ],
-                  ),
-                ),
-              ),
+              Text('Phone: ${order.shippingAddress?.phone}',
+                  style: const TextStyle(fontSize: 16)),
             ],
           ),
         ],
@@ -100,8 +112,33 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
+  Widget _infoRowBold(String label, String value,
+      {Color color = Colors.black}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 4,
+            child: Text(label,
+                style: TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.bold, color: color)),
+          ),
+          Expanded(
+            flex: 6,
+            child: Text(value,
+                style: TextStyle(
+                    fontSize: 16, fontWeight: FontWeight.bold, color: color)),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSectionCard(BuildContext context,
-      {required IconData icon, required String title, required List<Widget> children}) {
+      {required IconData icon,
+      required String title,
+      required List<Widget> children}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 3,
@@ -140,29 +177,13 @@ class OrderDetailScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 4,
-            child: Text(label, style: const TextStyle(fontSize: 16, color: Colors.black87)),
+            child: Text(label,
+                style: const TextStyle(fontSize: 16, color: Colors.black87)),
           ),
           Expanded(
             flex: 6,
-            child: Text(value, style: const TextStyle(fontSize: 16, color: Colors.black87)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _infoRowBold(String label, String value, {Color color = Colors.black}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
-          ),
-          Expanded(
-            flex: 6,
-            child: Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
+            child: Text(value,
+                style: const TextStyle(fontSize: 16, color: Colors.black87)),
           ),
         ],
       ),

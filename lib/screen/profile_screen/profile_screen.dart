@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+
 import '../../main.dart';
 import '../../utility/app_color.dart';
 import '../../utility/constants.dart';
 import '../../utility/extensions.dart';
 import '../../utility/animation/open_container_wrapper.dart';
 import '../../widget/navigation_tile.dart';
+import '../change_password_screen/provider/change_password_provider.dart';
 import '../login_screen/login_screen.dart';
 import '../my_address_screen/my_address_screen.dart';
 import '../my_order_screen/my_order_screen.dart';
 import '../profile_screen/provider/profile_provider.dart';
+import '../change_password_screen/change_password_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -18,6 +21,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const titleStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
+
+    final user = context.userProvider.getLoginUsr();
 
     return Scaffold(
       appBar: AppBar(
@@ -69,28 +74,37 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
+          // ───────────── Tên người dùng ─────────────
           Center(
             child: Text(
-              context.userProvider.getLoginUsr()?.name ?? '',
+              user?.name ?? '',
               style: titleStyle,
             ),
           ),
           const SizedBox(height: 20),
 
+          // ───────────── Chuyển theme ─────────────
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Dark Mode',
+                '',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 12),
+<<<<<<< HEAD
             
             Obx(() => FancyDarkModeSwitch(
   value: themeController.isDarkMode.value,
   onChanged: (_) => themeController.toggleTheme(),
 ))
 
+=======
+              Obx(() => FancyDarkModeSwitch(
+                    value: themeController.isDarkMode.value,
+                    onChanged: (_) => themeController.toggleTheme(),
+                  ))
+>>>>>>> dfe800f5937e0fa3896eb626cb9b5dd29100a054
             ],
           ),
           const SizedBox(height: 20),
@@ -108,6 +122,21 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
+          // 👇 ĐÃ TRUYỀN userId vào ChangePasswordScreen
+          OpenContainerWrapper(
+            nextScreen: ChangeNotifierProvider(
+              create: (_) => ChangePasswordProvider(),
+              child: ChangePasswordScreen(
+                userId: user?.sId ?? '',
+              ),
+            ),
+            child: const NavigationTile(
+              icon: Icons.change_circle,
+              title: 'Change Password',
+            ),
+          ),
+          const SizedBox(height: 20),
+
           // ───────────── Logout ─────────────
           Center(
             child: ElevatedButton(
@@ -121,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               onPressed: () {
                 context.userProvider.logOutUser();
-                Get.offAll( LoginScreen());
+                Get.offAll(LoginScreen());
               },
               child: const Text('Logout', style: TextStyle(fontSize: 18)),
             ),

@@ -8,7 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
-
+import './screen/change_password_screen/provider/change_password_provider.dart';
 import 'core/data/data_provider.dart';
 import 'models/user.dart';
 import 'screen/home_screen.dart';
@@ -40,11 +40,16 @@ void main() async {
         providers: [
           ChangeNotifierProvider(create: (_) => DataProvider()),
           ChangeNotifierProvider(create: (c) => UserProvider(c.dataProvider)),
-          ChangeNotifierProvider(create: (c) => ProfileProvider(c.dataProvider)),
-          ChangeNotifierProvider(create: (c) => ProductByCategoryProvider(c.dataProvider)),
-          ChangeNotifierProvider(create: (c) => ProductDetailProvider(c.dataProvider)),
+          ChangeNotifierProvider(
+              create: (c) => ProfileProvider(c.dataProvider)),
+          ChangeNotifierProvider(
+              create: (c) => ProductByCategoryProvider(c.dataProvider)),
+          ChangeNotifierProvider(
+              create: (c) => ProductDetailProvider(c.dataProvider)),
           ChangeNotifierProvider(create: (c) => CartProvider(c.userProvider)),
-          ChangeNotifierProvider(create: (c) => FavoriteProvider(c.dataProvider)),
+          ChangeNotifierProvider(
+              create: (c) => FavoriteProvider(c.dataProvider)),
+          ChangeNotifierProvider(create: (_) => ChangePasswordProvider()),
         ],
         child: const MyApp(),
       ),
@@ -161,6 +166,7 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 }
+
 class FancyDarkModeSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
@@ -177,27 +183,34 @@ class FancyDarkModeSwitch extends StatelessWidget {
       onTap: () => onChanged(!value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 600), // Tăng thời gian
-        curve: Curves.easeInOutCubic,                // Thêm hiệu ứng mượt
+        curve: Curves.easeInOutCubic, // Thêm hiệu ứng mượt
         width: 80,
         height: 40,
         padding: const EdgeInsets.symmetric(horizontal: 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           gradient: value
-              ? const LinearGradient(colors: [Color(0xFF232526), Color(0xFF414345)])
-              : const LinearGradient(colors: [Color(0xFFFFE000), Color(0xFF799F0C)]),
+              ? const LinearGradient(
+                  colors: [Color(0xFF232526), Color(0xFF414345)])
+              : const LinearGradient(
+                  colors: [Color(0xFFFFE000), Color(0xFF799F0C)]),
           boxShadow: [
             if (value)
-              const BoxShadow(color: Colors.black45, blurRadius: 6, offset: Offset(0, 3))
+              const BoxShadow(
+                  color: Colors.black45, blurRadius: 6, offset: Offset(0, 3))
             else
-              const BoxShadow(color: Colors.orangeAccent, blurRadius: 6, offset: Offset(0, 3))
+              const BoxShadow(
+                  color: Colors.orangeAccent,
+                  blurRadius: 6,
+                  offset: Offset(0, 3))
           ],
         ),
         child: Stack(
           children: [
             AnimatedAlign(
               duration: const Duration(milliseconds: 600),
-              curve: Curves.easeInOutCubic, // Thêm curve chuyển động cho vị trí icon
+              curve: Curves
+                  .easeInOutCubic, // Thêm curve chuyển động cho vị trí icon
               alignment: value ? Alignment.centerRight : Alignment.centerLeft,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 600),

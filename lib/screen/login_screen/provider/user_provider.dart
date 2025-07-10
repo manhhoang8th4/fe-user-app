@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:e_commerce_flutter/models/api_response.dart';
 import 'package:e_commerce_flutter/utility/snack_bar_helper.dart';
 import 'package:flutter_login/flutter_login.dart';
-
+import '../../../models/auth_data.dart';
 import '../../../core/data/data_provider.dart';
 import '../../../models/user.dart';
 import '../login_screen.dart';
@@ -28,18 +28,22 @@ class UserProvider extends ChangeNotifier {
   UserProvider(this._dataProvider);
 
   //login
-  Future<String?> login(LoginData data) async {
+  Future<String?> login(CustomLoginData data) async {
     try {
       Map<String, dynamic> loginData = {
-        "name": data.name.toLowerCase(),
-        "password": data.password
+        "email": data.email.toLowerCase(),
+        "password": data.password,
       };
+
       final response = await service.addItem(
           endpointUrl: 'users/login', itemData: loginData);
+
       if (response.isOk) {
         final ApiResponse<User> apiResponse = ApiResponse<User>.fromJson(
-            response.body,
-            (json) => User.fromJson(json as Map<String, dynamic>));
+          response.body,
+          (json) => User.fromJson(json as Map<String, dynamic>),
+        );
+
         if (apiResponse.success == true) {
           User? user = apiResponse.data;
           saveLoginInfo(user);
@@ -49,7 +53,7 @@ class UserProvider extends ChangeNotifier {
         } else {
           SnackBarHelper.showErrorSnackBar(
               'Failed to login: ${apiResponse.message}');
-          return 'Failed to Login';
+          return 'Failed to login: ${apiResponse.message}';
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
@@ -57,9 +61,8 @@ class UserProvider extends ChangeNotifier {
         return 'Error ${response.body?['message'] ?? response.statusText}';
       }
     } catch (e) {
-      print(e);
-      SnackBarHelper.showErrorSnackBar('An error onccurred: $e');
-      return 'An error onccurred: $e';
+      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      return 'An error occurred: $e';
     }
   }
 
@@ -105,24 +108,29 @@ class UserProvider extends ChangeNotifier {
   }
 
   //register
-  Future<String?> register(SignupData data) async {
+  Future<String?> register(CustomSignupData data) async {
     try {
-      Map<String, dynamic> user = {
-        "name": data.name?.toLowerCase(),
-        "password": data.password
+      Map<String, dynamic> userData = {
+        "name": data.name,
+        "email": data.email.toLowerCase(),
+        "password": data.password,
       };
-      final response =
-          await service.addItem(endpointUrl: 'users/register', itemData: user);
+
+      final response = await service.addItem(
+        endpointUrl: 'users/register',
+        itemData: userData,
+      );
+
       if (response.isOk) {
-        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        final apiResponse = ApiResponse.fromJson(response.body, null);
         if (apiResponse.success == true) {
           SnackBarHelper.showSuccessSnackBar(apiResponse.message);
           log('Register Success');
           return null;
         } else {
           SnackBarHelper.showErrorSnackBar(
-              'Failed to Register: ${apiResponse.message}');
-          return 'Failed to Register: ${apiResponse.message}';
+              'Failed to register: ${apiResponse.message}');
+          return 'Failed to register: ${apiResponse.message}';
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
@@ -130,7 +138,6 @@ class UserProvider extends ChangeNotifier {
         return 'Error ${response.body?['message'] ?? response.statusText}';
       }
     } catch (e) {
-      print(e);
       SnackBarHelper.showErrorSnackBar('An error occurred: $e');
       return 'An error occurred: $e';
     }
@@ -149,6 +156,6 @@ class UserProvider extends ChangeNotifier {
 
   logOutUser() {
     box.remove(USER_INFO_BOX);
-    Get.offAll( LoginScreen());
+    Get.offAll(LoginScreen());
   }
 }
