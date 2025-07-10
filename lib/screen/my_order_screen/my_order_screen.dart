@@ -1,4 +1,9 @@
 import 'package:e_commerce_flutter/models/user.dart';
+<<<<<<< HEAD
+=======
+import 'order_detail_screen.dart';
+
+>>>>>>> e864da26424cae2cd31c3366d1a3e46f63c45624
 import '../../core/data/data_provider.dart';
 import '../tracking_screen/tracking_screen.dart';
 import '../../utility/app_color.dart';
@@ -9,6 +14,11 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../widget/order_tile.dart';
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e864da26424cae2cd31c3366d1a3e46f63c45624
 class MyOrderScreen extends StatelessWidget {
   const MyOrderScreen({super.key});
 
@@ -33,11 +43,14 @@ class MyOrderScreen extends StatelessWidget {
                 items: '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} Items'  ,
                 date: order.orderDate ?? '',
                 status: order.orderStatus ?? 'pending',
-                onTap: (){
-                  if(order.orderStatus == 'shipped'){
-                    Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
-                  }
-                },
+              onTap: () {
+  if (order.orderStatus == 'shipped') {
+    Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
+  } else {
+    Get.to(OrderDetailScreen(order: order)); // Thêm dòng này
+  }
+},
+
               );
             },
           );
