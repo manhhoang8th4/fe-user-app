@@ -75,7 +75,6 @@ class OrderDetailScreen extends StatelessWidget {
             icon: Icons.payment,
             title: 'Payment',
             children: [
-<<<<<<< HEAD
               _infoRow('Method', order.paymentMethod ?? 'N/A'),
               _infoRow('Subtotal',
                   '${order.orderTotal?.subtotal?.toStringAsFixed(0) ?? '0'}₫'),
@@ -86,18 +85,6 @@ class OrderDetailScreen extends StatelessWidget {
                   color: Colors.redAccent),
               if (order.couponCode != null)
                 _infoRow('Coupon Code',
-=======
-              _infoRow('Phương thức', order.paymentMethod ?? 'N/A'),
-              _infoRow('Tạm tính',
-                  '${order.orderTotal?.subtotal?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRow('Giảm giá',
-                  '-${order.orderTotal?.discount?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRowBold('Tổng cộng',
-                  '${order.orderTotal?.total?.toStringAsFixed(0) ?? '0'}₫',
-                  color: Colors.redAccent),
-              if (order.couponCode != null)
-                _infoRow('Mã giảm giá',
->>>>>>> 7cab772 (fix(product): update product edit logic)
                     '${order.couponCode!.couponCode} (${order.couponCode!.discountAmount}% ${order.couponCode!.discountType})'),
             ],
           ),
@@ -116,43 +103,8 @@ class OrderDetailScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 4),
-<<<<<<< HEAD
               Text('Phone: ${order.shippingAddress?.phone}',
                   style: const TextStyle(fontSize: 16)),
-=======
-              Text('SĐT: ${order.shippingAddress?.phone}',
-                  style: const TextStyle(fontSize: 16)),
-            ],
-          ),
-          _buildSectionCard(
-            context,
-            icon: Icons.shopping_bag,
-            title: 'Sản phẩm đã mua',
-            children: [
-              ...?order.items?.map(
-                (item) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.productName ?? '',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      const SizedBox(height: 4),
-                      Text('Số lượng: ${item.quantity}'),
-                      Text('Giá: ${item.price?.toStringAsFixed(0)}₫'),
-                      Text('Phân loại: ${item.variant ?? 'Không có'}'),
-                    ],
-                  ),
-                ),
-              ),
->>>>>>> 7cab772 (fix(product): update product edit logic)
             ],
           ),
         ],
@@ -232,32 +184,6 @@ class OrderDetailScreen extends StatelessWidget {
             flex: 6,
             child: Text(value,
                 style: const TextStyle(fontSize: 16, color: Colors.black87)),
-<<<<<<< HEAD
-=======
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _infoRowBold(String label, String value,
-      {Color color = Colors.black}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Text(label,
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold, color: color)),
-          ),
-          Expanded(
-            flex: 6,
-            child: Text(value,
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold, color: color)),
->>>>>>> 7cab772 (fix(product): update product edit logic)
           ),
         ],
       ),

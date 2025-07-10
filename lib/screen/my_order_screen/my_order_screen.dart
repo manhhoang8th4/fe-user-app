@@ -1,9 +1,5 @@
 import 'package:e_commerce_flutter/models/user.dart';
-<<<<<<< HEAD
-=======
 import 'order_detail_screen.dart';
-
->>>>>>> e864da26424cae2cd31c3366d1a3e46f63c45624
 import '../../core/data/data_provider.dart';
 import '../tracking_screen/tracking_screen.dart';
 import '../../utility/app_color.dart';
@@ -14,17 +10,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../widget/order_tile.dart';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 
-
->>>>>>> e864da26424cae2cd31c3366d1a3e46f63c45624
->>>>>>> 4f1433f552fce7703416d9b40ab7f2d50d0a4ca9
-=======
->>>>>>> 7cab772 (fix(product): update product edit logic)
 class MyOrderScreen extends StatelessWidget {
   const MyOrderScreen({super.key});
 
