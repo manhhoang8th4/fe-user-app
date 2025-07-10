@@ -2,24 +2,25 @@ import 'package:e_commerce_flutter/screen/login_screen/provider/user_provider.da
 import 'package:e_commerce_flutter/screen/login_screen/signin_screen.dart';
 import 'package:e_commerce_flutter/screen/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
 import 'components/my_button.dart';
 import 'components/my_textfield.dart';
+import '../../../models/auth_data.dart'; // 👈 import CustomLoginData
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   void signUserIn(BuildContext context) async {
-    final username = usernameController.text.trim();
+    final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    final loginData = LoginData(name: username, password: password);
+    final loginData =
+        CustomLoginData(email: email, password: password); // ✅ dùng email
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final error = await userProvider.login(loginData);
+    final error = await userProvider.login(loginData); // ✅ sử dụng login mới
 
     if (error == null) {
       Navigator.pushReplacement(
@@ -70,15 +71,15 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Username
+                // ✅ Email
                 MyTextField(
-                  controller: usernameController,
-                  hintText: 'Username',
+                  controller: emailController,
+                  hintText: 'Email',
                   obscureText: false,
                 ),
                 const SizedBox(height: 15),
 
-                // Password
+                // ✅ Password
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -86,7 +87,6 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
 
-                // Forgot password
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -98,31 +98,28 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
 
-                // Sign In button
+                // ✅ Sign In button
                 MyButton(
                   text: "Sign In",
                   onTap: () => signUserIn(context),
                 ),
                 const SizedBox(height: 40),
 
-                // Or continue with
                 Row(
                   children: [
                     Expanded(
-                      child: Divider(thickness: 1, color: Colors.grey[400]),
-                    ),
+                        child: Divider(thickness: 1, color: Colors.grey[400])),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Text("Or continue with"),
                     ),
                     Expanded(
-                      child: Divider(thickness: 1, color: Colors.grey[400]),
-                    ),
+                        child: Divider(thickness: 1, color: Colors.grey[400])),
                   ],
                 ),
                 const SizedBox(height: 30),
 
-                // Social login
+                // Google / FB Login
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -144,14 +141,12 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Register now
+                // Register
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Not a member?',
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
+                    Text('Not a member?',
+                        style: TextStyle(color: Colors.grey[700])),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
@@ -163,9 +158,7 @@ class LoginScreen extends StatelessWidget {
                       child: const Text(
                         'Register now',
                         style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
