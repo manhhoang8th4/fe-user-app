@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+
 import '../../main.dart';
 import '../../utility/app_color.dart';
 import '../../utility/constants.dart';
 import '../../utility/extensions.dart';
 import '../../utility/animation/open_container_wrapper.dart';
 import '../../widget/navigation_tile.dart';
+
 import '../login_screen/login_screen.dart';
 import '../my_address_screen/my_address_screen.dart';
 import '../my_order_screen/my_order_screen.dart';
@@ -85,22 +87,10 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 12),
-<<<<<<< HEAD
               Obx(() => FancyDarkModeSwitch(
                     value: themeController.isDarkMode.value,
                     onChanged: (_) => themeController.toggleTheme(),
                   ))
-=======
-<<<<<<< HEAD
-            Obx(() => Switch(
-=======
-            Obx(() => FancyDarkModeSwitch(
->>>>>>> e864da26424cae2cd31c3366d1a3e46f63c45624
-  value: themeController.isDarkMode.value,
-  onChanged: (_) => themeController.toggleTheme(),
-))
-
->>>>>>> 4f1433f552fce7703416d9b40ab7f2d50d0a4ca9
             ],
           ),
           const SizedBox(height: 20),
