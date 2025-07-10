@@ -16,8 +16,8 @@
   "remove_current_photo": "Remove current photo",
   "logout": "Logout",
   "language": "Language",
-  "my_orders": "My Orders",
-  "my_addresses": "My Addresses",
+  "My Orders": "My Orders",
+  "My Addresses": "My Addresses",
   "services": "Services",
   "apple_warranty": "Apple Warranty",
   "exchange_old_new": "Exchange Old for New",
@@ -48,8 +48,16 @@
   "discount_percent": "Discount {percent}%",
   "Book": "Book",
   "Fashion": "Fashion",
-  "Electronics": "Electronics"
-
+  "Electronics": "Electronics",
+  "forgot_password": {
+    "title": "Forgot Password",
+    "instruction": "Enter your email to reset your password",
+    "email": "Email",
+    "submit": "Send Request",
+    "error_empty": "Please enter your email",
+    "error_invalid": "Invalid email format",
+    "sent_to": "A reset link has been sent to {0}"
+  }
 
 
 

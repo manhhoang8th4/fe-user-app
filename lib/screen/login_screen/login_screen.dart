@@ -1,3 +1,4 @@
+import 'package:e_commerce_flutter/screen/login_screen/forgot_password_screen.dart';
 import 'package:e_commerce_flutter/screen/login_screen/provider/user_provider.dart';
 import 'package:e_commerce_flutter/screen/login_screen/signin_screen.dart';
 import 'package:e_commerce_flutter/screen/home_screen.dart';
@@ -89,10 +90,15 @@ class LoginScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+                          );
+                        },
+                        child: const Text('Quên mật khẩu?'),
+                      )
                   ],
                 ),
                 const SizedBox(height: 25),
