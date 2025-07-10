@@ -83,15 +83,14 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Dark Mode',
+                '',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 12),
-            Obx(() => FancyDarkModeSwitch(
-  value: themeController.isDarkMode.value,
-  onChanged: (_) => themeController.toggleTheme(),
-))
-
+              Obx(() => FancyDarkModeSwitch(
+                    value: themeController.isDarkMode.value,
+                    onChanged: (_) => themeController.toggleTheme(),
+                  ))
             ],
           ),
           const SizedBox(height: 20),
@@ -122,7 +121,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               onPressed: () {
                 context.userProvider.logOutUser();
-                Get.offAll( LoginScreen());
+                Get.offAll(LoginScreen());
               },
               child: const Text('Logout', style: TextStyle(fontSize: 18)),
             ),

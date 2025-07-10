@@ -57,7 +57,8 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             child: Column(
               children: [
-                const Icon(Icons.lock_outline, size: 100, color: Colors.black87),
+                const Icon(Icons.lock_outline,
+                    size: 100, color: Colors.black87),
                 const SizedBox(height: 20),
                 Text(
                   'Welcome back!',
@@ -137,7 +138,7 @@ class LoginScreen extends StatelessWidget {
                     const CircleAvatar(
                       radius: 20,
                       backgroundColor: Colors.white,
-                      backgroundImage: AssetImage('assets/images/apple.png'),
+                      backgroundImage: AssetImage('assets/images/fb.png'),
                     ),
                   ],
                 ),
