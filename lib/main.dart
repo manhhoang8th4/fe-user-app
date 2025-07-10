@@ -19,6 +19,7 @@ import 'screen/product_cart_screen/provider/cart_provider.dart';
 import 'screen/product_details_screen/provider/product_detail_provider.dart';
 import 'screen/product_favorite_screen/provider/favorite_provider.dart';
 import 'screen/profile_screen/provider/profile_provider.dart';
+import 'screen/login_screen/provider/forgot_password_provider.dart';
 import 'utility/app_theme.dart';
 import 'utility/extensions.dart';
 
@@ -50,6 +51,7 @@ void main() async {
           ChangeNotifierProvider(
               create: (c) => FavoriteProvider(c.dataProvider)),
           ChangeNotifierProvider(create: (_) => ChangePasswordProvider()),
+          
         ],
         child: const MyApp(),
       ),
@@ -162,7 +164,7 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
 
-          home: loginUser?.sId == null ? LoginScreen() : const HomeScreen(),   
+          home: loginUser?.sId == null ? LoginScreen() : const HomeScreen(),
         ));
   }
 }

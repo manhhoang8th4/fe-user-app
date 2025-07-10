@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../../screen/login_screen/provider/forgot_password_provider.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -10,32 +12,32 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  bool _isLoading = false;
+  final _emailController = TextEditingController();
 
-  void _submitForgotPassword() async {
+  Future<void> _submitForgotPassword() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
-
     final email = _emailController.text.trim();
+    final provider =
+        Provider.of<ForgotPasswordProvider>(context, listen: false);
 
-    // 👉 TODO: Replace with your real API call
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() => _isLoading = false);
+    final error = await provider.sendForgotPassword(email);
 
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(tr('forgot_password.sent_to', args: [email])),
+      final snackBar = SnackBar(
+        content: Text(
+          error == null ? tr('forgot_password.sent_to', args: [email]) : error,
         ),
+        backgroundColor: error == null ? Colors.green : Colors.red,
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<ForgotPasswordProvider>().isLoading;
+
     return Scaffold(
       appBar: AppBar(title: Text(tr('forgot_password.title'))),
       body: Padding(
@@ -65,7 +67,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       if (value == null || value.trim().isEmpty) {
                         return tr('forgot_password.error_empty');
                       }
-                      final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
+                      final emailRegex =
+                          RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
                       if (!emailRegex.hasMatch(value.trim())) {
                         return tr('forgot_password.error_invalid');
                       }
@@ -76,9 +79,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _submitForgotPassword,
-                      child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
+                      onPressed: isLoading ? null : _submitForgotPassword,
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
                           : Text(tr('forgot_password.submit')),
                     ),
                   ),

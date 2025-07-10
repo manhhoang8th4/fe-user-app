@@ -92,19 +92,10 @@ class ProfileScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 12),
-<<<<<<< HEAD
-            
-            Obx(() => FancyDarkModeSwitch(
-  value: themeController.isDarkMode.value,
-  onChanged: (_) => themeController.toggleTheme(),
-))
-
-=======
               Obx(() => FancyDarkModeSwitch(
                     value: themeController.isDarkMode.value,
                     onChanged: (_) => themeController.toggleTheme(),
                   ))
->>>>>>> dfe800f5937e0fa3896eb626cb9b5dd29100a054
             ],
           ),
           const SizedBox(height: 20),

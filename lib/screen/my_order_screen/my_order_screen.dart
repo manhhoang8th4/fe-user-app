@@ -1,10 +1,7 @@
 import 'package:e_commerce_flutter/models/user.dart';
 import 'order_detail_screen.dart';
-<<<<<<< HEAD
-=======
 
 
->>>>>>> dfe800f5937e0fa3896eb626cb9b5dd29100a054
 import '../../core/data/data_provider.dart';
 import '../tracking_screen/tracking_screen.dart';
 import '../../utility/app_color.dart';
@@ -13,13 +10,9 @@ import '../../utility/utility_extention.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
-import '../../widget/order_tile.dart';class MyOrderScreen extends StatelessWidget {
-=======
 import '../../widget/order_tile.dart';
 
 class MyOrderScreen extends StatelessWidget {
->>>>>>> dfe800f5937e0fa3896eb626cb9b5dd29100a054
   const MyOrderScreen({super.key});
 
   @override
