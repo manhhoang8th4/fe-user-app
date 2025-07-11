@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PromotionScreen extends StatefulWidget {
   const PromotionScreen({super.key});
@@ -8,53 +9,47 @@ class PromotionScreen extends StatefulWidget {
 }
 
 class _PromotionScreenState extends State<PromotionScreen> {
-  final List<String> categories = ['Tất cả', 'iPhone', 'iPad', 'MacBook'];
-  String selectedCategory = 'Tất cả';
+  final List<String> categories = ['all', 'iphone', 'ipad', 'macbook'];
+  String selectedCategory = 'all';
 
   final List<Map<String, dynamic>> promotions = [
     {
       "name": "iPhone 15 Pro Max",
-      "image":
-          "https://cdn.tgdd.vn/Products/Images/42/305659/iphone-15-pro-max-1-2-3.jpg",
+      "image": "https://cdn.tgdd.vn/Products/Images/42/305659/iphone-15-pro-max-1-2-3.jpg",
       "price": 30000000,
       "discountPrice": 20050000,
-      "category": "iPhone",
+      "category": "iphone",
     },
     {
       "name": "iPad Pro 2024",
-      "image":
-          "https://cdn.tgdd.vn/Products/Images/522/305660/ipad-pro-m4.jpg",
+      "image": "https://cdn.tgdd.vn/Products/Images/522/305660/ipad-pro-m4.jpg",
       "price": 25000000,
       "discountPrice": 19490000,
-      "category": "iPad",
+      "category": "ipad",
     },
     {
       "name": "MacBook Air M3",
-      "image":
-          "https://cdn.tgdd.vn/Products/Images/44/315525/macbook-air-m3.jpg",
+      "image": "https://cdn.tgdd.vn/Products/Images/44/315525/macbook-air-m3.jpg",
       "price": 35000000,
       "discountPrice": 29900000,
-      "category": "MacBook",
+      "category": "macbook",
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> filteredPromotions =
-        selectedCategory == 'Tất cả'
-            ? promotions
-            : promotions
-                .where((item) => item['category'] == selectedCategory)
-                .toList();
+    final filteredPromotions = selectedCategory == 'all'
+        ? promotions
+        : promotions.where((item) => item['category'] == selectedCategory).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ưu đãi mới"),
+        title: Text(tr("promotion.title")),
         backgroundColor: Colors.pinkAccent,
       ),
       body: Column(
         children: [
-          // Bộ lọc danh mục
+          // Category filter
           Container(
             height: 45,
             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -66,7 +61,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: ChoiceChip(
-                    label: Text(cat),
+                    label: Text(tr("promotion.categories.$cat")),
                     selected: isSelected,
                     onSelected: (_) => setState(() {
                       selectedCategory = cat;
@@ -81,30 +76,25 @@ class _PromotionScreenState extends State<PromotionScreen> {
             ),
           ),
 
-          // Danh sách sản phẩm
+          // Promotion list
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(12),
               itemCount: filteredPromotions.length,
               itemBuilder: (context, index) {
                 final promo = filteredPromotions[index];
-                final double percent = ((1 -
-                            promo["discountPrice"] / promo["price"]) *
-                        100)
-                    .roundToDouble();
+                final percent = ((1 - promo["discountPrice"] / promo["price"]) * 100).round();
 
                 return Card(
                   margin: const EdgeInsets.only(bottom: 16),
                   elevation: 4,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            // Image
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
@@ -115,41 +105,24 @@ class _PromotionScreenState extends State<PromotionScreen> {
                               ),
                             ),
                             const SizedBox(width: 12),
-
-                            // Info
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    promo["name"],
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  Text(promo["name"], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                   const SizedBox(height: 4),
-                                  Text(
-                                    "${promo["price"]}đ",
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.lineThrough,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Text(
-                                    "${promo["discountPrice"]}đ",
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ),
+                                  Text("${promo["price"]}đ",
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.lineThrough,
+                                          color: Colors.grey)),
+                                  Text("${promo["discountPrice"]}đ",
+                                      style: const TextStyle(
+                                          fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red)),
                                 ],
                               ),
                             ),
-
-                            // Tag giảm giá
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: Colors.redAccent,
                                 borderRadius: BorderRadius.circular(8),
@@ -165,24 +138,18 @@ class _PromotionScreenState extends State<PromotionScreen> {
                           ],
                         ),
                         const SizedBox(height: 10),
-
-                        // Buttons
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          "Bạn đã chọn mua: ${promo["name"]}")),
+                                  SnackBar(content: Text(tr("promotion.selected", args: [promo["name"]]))),
                                 );
                               },
                               icon: const Icon(Icons.shopping_cart),
-                              label: const Text("Mua ngay"),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                              ),
+                              label: Text(tr("promotion.buy_now")),
+                              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                             ),
                             TextButton.icon(
                               onPressed: () {
@@ -196,21 +163,23 @@ class _PromotionScreenState extends State<PromotionScreen> {
                                         Image.network(promo["image"]),
                                         const SizedBox(height: 8),
                                         Text(
-                                            "Giá gốc: ${promo["price"]}đ\nƯu đãi: ${promo["discountPrice"]}đ\nGiảm ${percent.toInt()}%"),
+                                          "${tr("promotion.dialog.original_price")}: ${promo["price"]}đ\n"
+                                          "${tr("promotion.dialog.discount_price")}: ${promo["discountPrice"]}đ\n"
+                                          "${tr("promotion.dialog.discount", args: [percent.toString()])}",
+                                        ),
                                       ],
                                     ),
                                     actions: [
                                       TextButton(
-                                        child: const Text("Đóng"),
-                                        onPressed: () =>
-                                            Navigator.pop(context),
+                                        child: Text(tr("promotion.dialog.close")),
+                                        onPressed: () => Navigator.pop(context),
                                       )
                                     ],
                                   ),
                                 );
                               },
                               icon: const Icon(Icons.info_outline),
-                              label: const Text("Chi tiết"),
+                              label: Text(tr("promotion.details")),
                             )
                           ],
                         )

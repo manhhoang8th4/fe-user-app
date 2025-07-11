@@ -3,6 +3,7 @@ import 'package:e_commerce_flutter/utility/snack_bar_helper.dart';
 import 'package:e_commerce_flutter/utility/utility_extention.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:easy_localization/easy_localization.dart'; // 👈 Thêm dòng này
 
 import '../../../core/data/data_provider.dart';
 
@@ -20,14 +21,14 @@ class ProductDetailProvider extends ChangeNotifier {
     } else if (selectedVariants.length < 2) {
       selectedVariants.add(variant);
     } else {
-      SnackBarHelper.showErrorSnackBar('You can select up to 2 variants');
+      SnackBarHelper.showErrorSnackBar('select_up_to_two_variants'.tr());
     }
     notifyListeners();
   }
 
   void addToCart(Product product) {
     if (product.proVariantId!.isNotEmpty && selectedVariants.isEmpty) {
-      SnackBarHelper.showErrorSnackBar('Please select a variant');
+      SnackBarHelper.showErrorSnackBar('please_select_variant'.tr());
       return;
     }
 
@@ -49,7 +50,7 @@ class ProductDetailProvider extends ChangeNotifier {
     );
 
     selectedVariants.clear(); // reset sau khi thêm
-    SnackBarHelper.showSuccessSnackBar('Item Added');
+    SnackBarHelper.showSuccessSnackBar('item_added'.tr());
     notifyListeners();
   }
 

@@ -1,11 +1,13 @@
-import 'package:e_commerce_flutter/utility/extensions.dart';
-import 'provider/product_detail_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart'; // 👈 Thêm dòng này
+
 import '../../../../widget/carousel_slider.dart';
 import '../../../../widget/page_wrapper.dart';
+import '../../../../widget/horizondal_list.dart';
 import '../../models/product.dart';
-import '../../widget/horizondal_list.dart';
+import '../../utility/extensions.dart';
+import 'provider/product_detail_provider.dart';
 import 'components/product_rating_section.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -34,7 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ───── Product image section ─────
+                // ───── Product image ─────
                 Container(
                   height: height * 0.42,
                   width: width,
@@ -49,7 +51,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // ───── Product info section ─────
+                // ───── Info section ─────
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -63,7 +65,7 @@ class ProductDetailScreen extends StatelessWidget {
                       const ProductRatingSection(),
                       const SizedBox(height: 10),
 
-                      // ───── Price, Offer, Stock ─────
+                      // ───── Price + Stock ─────
                       Row(
                         children: [
                           Text(
@@ -87,21 +89,21 @@ class ProductDetailScreen extends StatelessWidget {
                           const Spacer(),
                           Text(
                             product.quantity != 0
-                                ? "Available stock : ${product.quantity}"
-                                : "Not available",
+                                ? 'available_stock'.tr(args: [product.quantity.toString()])
+                                : 'not_available'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
-
                       const SizedBox(height: 30),
 
                       // ───── Variant Type Title ─────
                       if (product.proVariantId?.isNotEmpty ?? false)
                         Text(
-                          'Available ${product.proVariantTypeId?.type}',
-                          style:
-                              const TextStyle(color: Colors.red, fontSize: 16),
+                          'available_variants'.tr(args: [
+                            product.proVariantTypeId?.type ?? ''
+                          ]),
+                          style: const TextStyle(color: Colors.red, fontSize: 16),
                         ),
 
                       // ───── Variant List ─────
@@ -117,8 +119,7 @@ class ProductDetailScreen extends StatelessWidget {
                                           .selectedVariants
                                           .contains(variant),
                                       onSelected: (_) {
-                                        proDetailProvider
-                                            .toggleVariant(variant);
+                                        proDetailProvider.toggleVariant(variant);
                                       },
                                       selectedColor: Colors.orange,
                                     ))
@@ -126,17 +127,16 @@ class ProductDetailScreen extends StatelessWidget {
                           );
                         },
                       ),
-
                       const SizedBox(height: 30),
 
                       // ───── Description ─────
-                      Text("About",
+                      Text("about".tr(),
                           style: Theme.of(context).textTheme.headlineMedium),
                       const SizedBox(height: 10),
                       Text(product.description ?? ''),
                       const SizedBox(height: 40),
 
-                      // ───── Add to Cart Button ─────
+                      // ───── Add to Cart ─────
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -144,8 +144,10 @@ class ProductDetailScreen extends StatelessWidget {
                               ? () =>
                                   context.proDetailProvider.addToCart(product)
                               : null,
-                          child: const Text("Add to cart",
-                              style: TextStyle(color: Colors.white)),
+                          child: Text(
+                            'add_to_cart'.tr(),
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],

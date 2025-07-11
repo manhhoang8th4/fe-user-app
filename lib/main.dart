@@ -162,7 +162,7 @@ class _MyAppState extends State<MyApp> {
           supportedLocales: context.supportedLocales,
           localizationsDelegates: context.localizationDelegates,
 
-          home: loginUser?.sId == null ? LoginScreen() : const HomeScreen(),   
+          home: loginUser?.sId == null ? LoginScreen() : const HomeScreen(),
         ));
   }
 }

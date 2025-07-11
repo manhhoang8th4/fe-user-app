@@ -1,14 +1,14 @@
-import 'package:e_commerce_flutter/models/user.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart' as easy_localization;
+
 import 'order_detail_screen.dart';
 import '../../core/data/data_provider.dart';
 import '../tracking_screen/tracking_screen.dart';
 import '../../utility/app_color.dart';
 import '../../utility/extensions.dart';
 import '../../utility/utility_extention.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-import '../../widget/order_tile.dart';
 import '../../widget/order_tile.dart';
 
 class MyOrderScreen extends StatelessWidget {
@@ -20,9 +20,9 @@ class MyOrderScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "My Orders",
-          style: TextStyle(
+        title: Text(
+          easy_localization.tr('my_orders'), // Sử dụng easy_localization rõ ràng
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppColor.darkOrange,
@@ -37,11 +37,9 @@ class MyOrderScreen extends StatelessWidget {
               final order = context.dataProvider.orders[index];
               return GestureDetector(
                 onTap: () {
-                  // Bấm 1 lần thì luôn mở chi tiết đơn hàng
                   Get.to(OrderDetailScreen(order: order));
                 },
                 onDoubleTap: () {
-                  // Nếu đơn hàng đã shipped thì bấm 2 lần mở trang tracking
                   if (order.orderStatus == 'shipped') {
                     Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
                   }
@@ -49,10 +47,10 @@ class MyOrderScreen extends StatelessWidget {
                 child: OrderTile(
                   paymentMethod: order.paymentMethod ?? '',
                   items:
-                      '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} Items',
+                      '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} ${easy_localization.tr("items")}',
                   date: order.orderDate ?? '',
                   status: order.orderStatus ?? 'pending',
-                  onTap: null, // bỏ onTap ở đây để GestureDetector xử lý
+                  onTap: null,
                 ),
               );
             },

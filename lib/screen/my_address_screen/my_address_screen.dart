@@ -1,5 +1,6 @@
 import '../../utility/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../utility/app_color.dart';
 import '../../widget/custom_text_field.dart';
 
@@ -11,9 +12,9 @@ class MyAddressPage extends StatelessWidget {
     context.profileProvider.retrieveSavedAddress();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "My Address",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColor.darkOrange),
+        title: Text(
+          "my_address".tr(),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColor.darkOrange),
         ),
       ),
       body: SingleChildScrollView(
@@ -36,48 +37,48 @@ class MyAddressPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTextField(
-                            labelText: 'Phone',
+                            labelText: 'phone'.tr(),
                             onSave: (value) {},
                             inputType: TextInputType.number,
                             controller: context.profileProvider.phoneController,
-                            validator: (value) => value!.isEmpty ? 'Please enter a phone number' : null,
+                            validator: (value) => value!.isEmpty ? 'enter_phone'.tr() : null,
                           ),
                           CustomTextField(
-                            labelText: 'Street',
+                            labelText: 'street'.tr(),
                             onSave: (val) {},
                             controller: context.profileProvider.streetController,
-                            validator: (value) => value!.isEmpty ? 'Please enter a street' : null,
+                            validator: (value) => value!.isEmpty ? 'enter_street'.tr() : null,
                           ),
                           CustomTextField(
-                            labelText: 'City',
+                            labelText: 'city'.tr(),
                             onSave: (value) {},
                             controller: context.profileProvider.cityController,
-                            validator: (value) => value!.isEmpty ? 'Please enter a city' : null,
+                            validator: (value) => value!.isEmpty ? 'enter_city'.tr() : null,
                           ),
                           CustomTextField(
-                            labelText: 'State',
+                            labelText: 'state'.tr(),
                             onSave: (value) {},
                             controller: context.profileProvider.stateController,
-                            validator: (value) => value!.isEmpty ? 'Please enter a state' : null,
+                            validator: (value) => value!.isEmpty ? 'enter_state'.tr() : null,
                           ),
                           Row(
                             children: [
                               Expanded(
                                 child: CustomTextField(
-                                  labelText: 'Postal Code',
+                                  labelText: 'postal_code'.tr(),
                                   onSave: (value) {},
                                   inputType: TextInputType.number,
                                   controller: context.profileProvider.postalCodeController,
-                                  validator: (value) => value!.isEmpty ? 'Please enter a code' : null,
+                                  validator: (value) => value!.isEmpty ? 'enter_postal_code'.tr() : null,
                                 ),
                               ),
                               const SizedBox(width: 10),
                               Expanded(
                                 child: CustomTextField(
-                                  labelText: 'Country',
+                                  labelText: 'country'.tr(),
                                   onSave: (value) {},
                                   controller: context.profileProvider.countryController,
-                                  validator: (value) => value!.isEmpty ? 'Please enter a country' : null,
+                                  validator: (value) => value!.isEmpty ? 'enter_country'.tr() : null,
                                 ),
                               ),
                             ],
@@ -100,7 +101,7 @@ class MyAddressPage extends StatelessWidget {
                           context.profileProvider.storeAddress();
                         }
                       },
-                      child: const Text('Update Address', style: TextStyle(fontSize: 18)),
+                      child: Text('update_address'.tr(), style: const TextStyle(fontSize: 18)),
                     ),
                   ),
                 ],

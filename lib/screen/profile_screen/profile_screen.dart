@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../../main.dart';
 import '../../utility/app_color.dart';
@@ -26,9 +27,9 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'My Account',
-          style: TextStyle(
+        title: Text(
+          tr('my_account'),
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: AppColor.darkOrange,
@@ -38,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          // ───────────── Avatar + Action Sheet ─────────────
+          // ───────────── Avatar ─────────────
           Selector<ProfileProvider, int>(
             selector: (_, p) => p.hashCode,
             builder: (_, __, ___) {
@@ -59,8 +60,8 @@ class ProfileScreen extends StatelessWidget {
                     Positioned(
                       child: GestureDetector(
                         onTap: () => _showAvatarActionSheet(context, provider),
-                        child: CircleAvatar(
-                          backgroundColor: const Color.fromARGB(179, 2, 2, 2),
+                        child: const CircleAvatar(
+                          backgroundColor: Color.fromARGB(179, 2, 2, 2),
                           radius: 12,
                           child: Icon(Icons.camera_alt,
                               color: AppColor.darkOrange),
@@ -74,26 +75,25 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // ───────────── Tên người dùng ─────────────
+          // ───────────── User name ─────────────
           Center(
             child: Text(
-              user?.name ?? '',
+              user?.name?.toString() ?? 'Guest',
               style: titleStyle,
             ),
           ),
           const SizedBox(height: 20),
 
-          // ───────────── Chuyển theme ─────────────
+          // ───────────── Dark mode toggle ─────────────
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                '',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              Text(
+                tr(''),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               const SizedBox(width: 12),
-          
-
               Obx(() => FancyDarkModeSwitch(
                     value: themeController.isDarkMode.value,
                     onChanged: (_) => themeController.toggleTheme(),
@@ -102,20 +102,27 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // ───────────── Navigation Items ─────────────
-          const OpenContainerWrapper(
-            nextScreen: MyOrderScreen(),
-            child: NavigationTile(icon: Icons.list, title: 'My Orders'),
+          // ───────────── My Orders ─────────────
+          OpenContainerWrapper(
+            nextScreen: const MyOrderScreen(),
+            child: NavigationTile(
+              icon: Icons.list,
+              title: tr('my_orders'),
+            ),
           ),
           const SizedBox(height: 15),
-          const OpenContainerWrapper(
-            nextScreen: MyAddressPage(),
-            child:
-                NavigationTile(icon: Icons.location_on, title: 'My Addresses'),
+
+          // ───────────── My Addresses ─────────────
+          OpenContainerWrapper(
+            nextScreen: const MyAddressPage(),
+            child: NavigationTile(
+              icon: Icons.location_on,
+              title: tr('my_addresses'),
+            ),
           ),
           const SizedBox(height: 20),
 
-          // 👇 ĐÃ TRUYỀN userId vào ChangePasswordScreen
+          // ───────────── Change Password ─────────────
           OpenContainerWrapper(
             nextScreen: ChangeNotifierProvider(
               create: (_) => ChangePasswordProvider(),
@@ -123,9 +130,9 @@ class ProfileScreen extends StatelessWidget {
                 userId: user?.sId ?? '',
               ),
             ),
-            child: const NavigationTile(
+            child: NavigationTile(
               icon: Icons.change_circle,
-              title: 'Change Password',
+              title: tr('change_password'),
             ),
           ),
           const SizedBox(height: 20),
@@ -143,9 +150,12 @@ class ProfileScreen extends StatelessWidget {
               ),
               onPressed: () {
                 context.userProvider.logOutUser();
-                Get.offAll(LoginScreen());
+                Get.offAll(() => LoginScreen());
               },
-              child: const Text('Logout', style: TextStyle(fontSize: 18)),
+              child: Text(
+                tr('logout'),
+                style: const TextStyle(fontSize: 18),
+              ),
             ),
           ),
         ],
@@ -153,7 +163,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // ───────────── Bottom Sheet Action ─────────────
   void _showAvatarActionSheet(BuildContext ctx, ProfileProvider provider) {
     final userId = ctx.userProvider.getLoginUsr()?.sId ?? '';
 
@@ -167,7 +176,7 @@ class ProfileScreen extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.image),
-            title: const Text('Choose new photo'),
+            title: Text(tr('choose_new_photo')),
             onTap: () async {
               Navigator.pop(ctx);
               await provider.pickAvatar();
@@ -178,7 +187,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.delete),
-            title: const Text('Remove current photo'),
+            title: Text(tr('remove_current_photo')),
             onTap: () async {
               Navigator.pop(ctx);
               if (userId.isNotEmpty) {

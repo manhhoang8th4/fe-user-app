@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class InstallmentScreen extends StatelessWidget {
   const InstallmentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const hotline = '0868004667'; // Hotline ShopDunk
+    const hotline = '0868004667';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Trả góp'),
+        title: Text(tr('installment.title')),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -18,47 +19,45 @@ class InstallmentScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 📝 Mô tả tổng quát
-            const Text(
-              'Chương trình Trả góp tại ShopDunk',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // Mô tả tổng quát
+            Text(
+              tr('installment.description_title'),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            const Text(
-              'ShopDunk hỗ trợ trả góp lãi suất 0% cho tất cả sản phẩm Apple chính hãng. '
-              'Hình thức linh hoạt, duyệt nhanh, không cần chứng minh thu nhập.',
-              style: TextStyle(fontSize: 16),
+            Text(
+              tr('installment.description'),
+              style: const TextStyle(fontSize: 16),
             ),
 
             const SizedBox(height: 24),
 
-            // 🔁 Hình thức trả góp
-            const Text(
-              'Hình thức trả góp:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            // Hình thức trả góp
+            Text(
+              tr('installment.method_title'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
-            const BulletPoint(text: 'Trả góp qua thẻ tín dụng (Visa/Master/JCB)'),
-            const BulletPoint(text: 'Trả góp qua công ty tài chính (HD Saison, FE Credit...)'),
-            const BulletPoint(text: 'Thời hạn linh hoạt: 3 - 12 tháng'),
+            BulletPoint(text: tr('installment.methods.card')),
+            BulletPoint(text: tr('installment.methods.finance')),
+            BulletPoint(text: tr('installment.methods.terms')),
 
             const SizedBox(height: 24),
 
-            // 📊 Mô phỏng bảng
-            const Text(
-              'Ví dụ trả góp iPhone 15 (giá 25.000.000đ):',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            // Bảng mô phỏng
+            Text(
+              tr('installment.example_title'),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 10),
 
-            // ✅ FIX overflow bằng SingleChildScrollView
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('Kỳ hạn')),
-                  DataColumn(label: Text('Số tiền/tháng')),
-                  DataColumn(label: Text('Tổng')),
+                columns: [
+                  DataColumn(label: Text(tr('installment.columns.term'))),
+                  DataColumn(label: Text(tr('installment.columns.monthly'))),
+                  DataColumn(label: Text(tr('installment.columns.total'))),
                 ],
                 rows: const [
                   DataRow(cells: [
@@ -82,23 +81,22 @@ class InstallmentScreen extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            // 📞 Đăng ký trả góp
+            // Nút đăng ký
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.phone),
-                label: const Text('Đăng ký trả góp'),
+                label: Text(tr('installment.button')),
                 onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Xác nhận gọi'),
-                      content: const Text(
-                          'Bạn có muốn gọi đến tổng đài 18006675 để đăng ký trả góp không?'),
+                      title: Text(tr('installment.dialog.title')),
+                      content: Text(tr('installment.dialog.content')),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),
-                          child: const Text('Hủy'),
+                          child: Text(tr('installment.dialog.cancel')),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -108,7 +106,7 @@ class InstallmentScreen extends StatelessWidget {
                               await launchUrl(uri);
                             }
                           },
-                          child: const Text('Gọi ngay'),
+                          child: Text(tr('installment.dialog.call')),
                         ),
                       ],
                     ),

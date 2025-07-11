@@ -1,7 +1,9 @@
-import 'provider/cart_provider.dart';
-import '../../utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart'; // 👈 Thêm dòng này
+
+import '../../utility/extensions.dart';
+import 'provider/cart_provider.dart';
 import '../../utility/animation/animated_switcher_wrapper.dart';
 import '../../utility/app_color.dart';
 import 'components/buy_now_bottom_sheet.dart';
@@ -16,11 +18,16 @@ class CartScreen extends StatelessWidget {
     Future.delayed(Duration.zero, () {
       context.cartProvider.getCartItems();
     });
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "My Cart",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColor.darkOrange),
+        title: Text(
+          'my_cart'.tr(), // ✅ dùng key từ en/vi.json
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppColor.darkOrange,
+          ),
         ),
       ),
       body: Consumer<CartProvider>(
@@ -30,50 +37,52 @@ class CartScreen extends StatelessWidget {
             children: [
               cartProvider.myCartItems.isEmpty
                   ? const EmptyCart()
-                  : Consumer<CartProvider>(
-                      builder: (context, cartProvider, child) {
-                        return CartListSection(cartProducts: cartProvider.myCartItems);
-                      },
-                    ),
+                  : CartListSection(cartProducts: cartProvider.myCartItems),
 
-              //? total price section
+              // ───── Tổng tiền ─────
               Container(
                 margin: const EdgeInsets.only(bottom: 15),
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child:  Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                   const  Text(
-                      "Total",
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+                    Text(
+                      'total'.tr(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     AnimatedSwitcherWrapper(
                       child: Text(
                         "\$${context.cartProvider.getCartSubTotal()}",
-                        // key: ValueKey<double>(cartProvider.getCartSubTotal()),
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w900,
                           color: Color(0xFFEC6813),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-              //? buy now button
+
+              // ───── Nút Mua ngay ─────
               SizedBox(
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(20)),
-                    onPressed: context.cartProvider.myCartItems.isEmpty
+                    onPressed: cartProvider.myCartItems.isEmpty
                         ? null
                         : () {
                             showCustomBottomSheet(context);
                           },
-                    child: const Text("Buy Now", style: TextStyle(color: Colors.white)),
+                    child: Text(
+                      'buy_now'.tr(),
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               )

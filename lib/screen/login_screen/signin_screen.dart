@@ -1,9 +1,10 @@
 import 'package:e_commerce_flutter/screen/login_screen/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'components/my_button.dart';
 import 'components/my_textfield.dart';
-import '../../../models/auth_data.dart'; // 👈 import CustomSignupData
+import '../../../models/auth_data.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -21,7 +22,7 @@ class SignInScreen extends StatelessWidget {
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
+        SnackBar(content: Text('passwords_not_match'.tr())),
       );
       return;
     }
@@ -33,10 +34,10 @@ class SignInScreen extends StatelessWidget {
     );
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final error = await userProvider.register(signupData); // ✅ custom register
+    final error = await userProvider.register(signupData);
 
     if (error == null) {
-      Navigator.pop(context); // Quay lại màn login
+      Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(error)),
@@ -58,7 +59,7 @@ class SignInScreen extends StatelessWidget {
                     size: 100, color: Colors.black87),
                 const SizedBox(height: 20),
                 Text(
-                  'Create your account',
+                  'create_account_title'.tr(),
                   style: TextStyle(
                     fontSize: 22,
                     color: Colors.grey[800],
@@ -70,7 +71,7 @@ class SignInScreen extends StatelessWidget {
                 // Email
                 MyTextField(
                   controller: emailController,
-                  hintText: 'Email',
+                  hintText: 'email'.tr(),
                   obscureText: false,
                 ),
                 const SizedBox(height: 15),
@@ -78,7 +79,7 @@ class SignInScreen extends StatelessWidget {
                 // Username
                 MyTextField(
                   controller: usernameController,
-                  hintText: 'Username',
+                  hintText: 'username'.tr(),
                   obscureText: false,
                 ),
                 const SizedBox(height: 15),
@@ -86,7 +87,7 @@ class SignInScreen extends StatelessWidget {
                 // Password
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Password',
+                  hintText: 'password'.tr(),
                   obscureText: true,
                 ),
                 const SizedBox(height: 15),
@@ -94,13 +95,13 @@ class SignInScreen extends StatelessWidget {
                 // Confirm Password
                 MyTextField(
                   controller: confirmPasswordController,
-                  hintText: 'Confirm Password',
+                  hintText: 'confirm_password'.tr(),
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
 
                 MyButton(
-                  text: "Sign Up",
+                  text: "sign_up".tr(),
                   onTap: () => registerUser(context),
                 ),
                 const SizedBox(height: 30),
@@ -108,15 +109,15 @@ class SignInScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Already have an account?",
+                    Text("already_have_account".tr(),
                         style: TextStyle(color: Colors.grey[700])),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Text("Login now",
-                          style: TextStyle(
+                      child: Text("login_now".tr(),
+                          style: const TextStyle(
                               color: Colors.blue, fontWeight: FontWeight.bold)),
                     ),
                   ],

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AppleWarrantyScreen extends StatelessWidget {
   const AppleWarrantyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const phoneNumber = '0868004667'; // Hotline
-    const zaloNumber = '0868004667'; // SĐT có Zalo
+    const phoneNumber = '0868004667';
+    const zaloNumber = '0868004667';
+
+    final services = List<String>.from(tr('warranty.services', args: [], namedArgs: {}, gender: null).split('|'));
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bảo hành Apple'),
+        title: Text(tr('warranty.title')),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -30,28 +33,24 @@ class AppleWarrantyScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // 📝 Mô tả
-            const Text(
-              'Chính sách bảo hành Apple tại ShopDunk',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              tr('warranty.description_title'),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'Sản phẩm Apple được bảo hành theo chính sách chính hãng toàn cầu. '
-              'ShopDunk hỗ trợ kiểm tra bảo hành và gửi bảo hành cho khách hàng với quy trình nhanh chóng, minh bạch.',
-              style: TextStyle(fontSize: 16),
+            Text(
+              tr('warranty.description'),
+              style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
 
             // ✅ Dịch vụ hỗ trợ
-            const Text(
-              'Các dịch vụ hỗ trợ:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            Text(
+              tr('warranty.services_title'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
-            const BulletPoint(text: 'Kiểm tra tình trạng bảo hành Apple'),
-            const BulletPoint(text: 'Hướng dẫn gửi bảo hành chính hãng'),
-            const BulletPoint(text: 'Thay pin, sửa chữa thiết bị Apple'),
-            const BulletPoint(text: 'Tư vấn bảo hành 24/7'),
+            ...services.map((text) => BulletPoint(text: text)).toList(),
 
             const SizedBox(height: 30),
 
@@ -61,29 +60,25 @@ class AppleWarrantyScreen extends StatelessWidget {
               children: [
                 ElevatedButton.icon(
                   icon: const Icon(Icons.phone),
-                  label: const Text('Gọi ngay'),
+                  label: Text(tr('warranty.call')),
                   onPressed: () async {
                     final uri = Uri.parse('tel:$phoneNumber');
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri);
-                    }
+                    if (await canLaunchUrl(uri)) await launchUrl(uri);
                   },
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.sms),
-                  label: const Text('Gửi SMS'),
+                  label: Text(tr('warranty.sms')),
                   onPressed: () async {
                     final uri = Uri.parse('sms:$phoneNumber');
-                    if (await canLaunchUrl(uri)) {
-                      await launchUrl(uri);
-                    }
+                    if (await canLaunchUrl(uri)) await launchUrl(uri);
                   },
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.chat),
-                  label: const Text('Chat Zalo'),
+                  label: Text(tr('warranty.zalo')),
                   onPressed: () async {
                     final uri = Uri.parse('https://zalo.me/$zaloNumber');
                     if (await canLaunchUrl(uri)) {

@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
-
-import '../../utility/app_data.dart';
 import '../../widget/page_wrapper.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -125,7 +123,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const ExchangeOldNewScreen()));
               }),
-              _drawerSubItem('installment'.tr(), () {
+              _drawerSubItem('installment.title'.tr(), () {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const InstallmentScreen()));
@@ -143,7 +141,7 @@ class _AppDrawerState extends State<AppDrawer> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const TechnologyNewsScreen()));
               }),
-              _drawerSubItem('promotion'.tr(), () {
+              _drawerSubItem('promotion.title'.tr(), () {
                 Navigator.pop(context);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const PromotionScreen()));

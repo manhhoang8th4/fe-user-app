@@ -22,19 +22,26 @@ class HttpService {
     }
   }
 
-  Future<Response> addItem(
-      {required String endpointUrl, required dynamic itemData}) async {
-    try {
-      final response =
-          await GetConnect().post('$baseUrl/$endpointUrl', itemData);
-      print(response.body);
-      return response;
-    } catch (e) {
-      print('Error: $e');
-      return Response(
-          body: json.encode({'message': e.toString()}), statusCode: 500);
-    }
+Future<Response> addItem({
+  required String endpointUrl,
+  required dynamic itemData,
+}) async {
+  try {
+    final response = await GetConnect().post(
+      '$baseUrl/$endpointUrl',
+      jsonEncode(itemData), // 🔥 cần encode
+      headers: {
+        'Content-Type': 'application/json', // 🔥 header cần thiết
+      },
+    );
+    print(response.body);
+    return response;
+  } catch (e) {
+    print('Error: $e');
+    return Response(
+        body: json.encode({'message': e.toString()}), statusCode: 500);
   }
+}
 
   Future<Response> updateItem(
       {required String endpointUrl,

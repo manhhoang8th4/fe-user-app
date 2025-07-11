@@ -1,5 +1,5 @@
 {
-    "select_language": "Select Language",
+  "select_language": "Select Language",
   "hello": "Hello",
   "start": "Get Started",
   "home": "Home",
@@ -10,22 +10,21 @@
   "detail": "Detail",
   "vietnamese": "Vietnamese",
   "english": "English",
-    "my_account": "My Account",
+  "my_account": "My Account",
   "dark_mode": "Dark Mode",
   "choose_new_photo": "Choose new photo",
   "remove_current_photo": "Remove current photo",
   "logout": "Logout",
   "language": "Language",
-  "My Orders": "My Orders",
-  "My Addresses": "My Addresses",
+  "my_orders": "My Orders",
+  "my_addresses": "My Addresses",
   "services": "Services",
   "apple_warranty": "Apple Warranty",
   "exchange_old_new": "Exchange Old for New",
   "installment": "Installment",
   "newsfeed": "Newsfeed",
   "technology_news": "Technology News",
-  "promotion": "Promotion",
-   "apple_warranty_policy_title": "Apple Warranty Policy at ShopDunk",
+  "apple_warranty_policy_title": "Apple Warranty Policy at ShopDunk",
   "apple_warranty_policy_description": "Apple products are warranted according to the global official warranty policy. ShopDunk supports checking warranty status and sending the device for warranty on behalf of customers with a quick and transparent process.",
   "apple_warranty_services": "Supported services:",
   "check_apple_warranty": "• Check Apple warranty status",
@@ -49,7 +48,9 @@
   "Book": "Book",
   "Fashion": "Fashion",
   "Electronics": "Electronics",
-  "forgot_password": {
+
+  "forgot_password": "Forgot password?",
+  "forgot_password_screen": {
     "title": "Forgot Password",
     "instruction": "Enter your email to reset your password",
     "email": "Email",
@@ -57,13 +58,123 @@
     "error_empty": "Please enter your email",
     "error_invalid": "Invalid email format",
     "sent_to": "A reset link has been sent to {0}"
-  }
+  },
 
+  "change_password": "Change Password",
+  "greeting": "Hello Sina",
+  "get_something": "Let's get something?",
+  "top_categories": "Top categories",
+  "favorites_title": "Favorites",
+  "available_stock": "Available stock: {}",
+  "not_available": "Not available",
+  "about": "About",
+  "add_to_cart": "Add to cart",
+  "available_variants": "Available {}",
+  "my_cart": "My Cart",
+  "total": "Total",
+  "sort_by_price": "Sort By Price",
+  "low_to_high": "Low To High",
+  "high_to_low": "High To Low",
+  "filter_by_brands": "Filter By Brands",
+  "items": "Items",
+  "order_details": "Order Details",
+  "order_info": "Order Information",
+  "order_id": "Order ID",
+  "status": "Status",
+  "order_date": "Order Date",
+  "purchased_products": "Purchased Products",
+  "quantity": "Quantity",
+  "price": "Price",
+  "variant": "Variant",
+  "payment": "Payment",
+  "method": "Method",
+  "subtotal": "Subtotal",
+  "discount": "Discount",
+  "coupon_code": "Coupon Code",
+  "shipping_address": "Shipping Address",
+  "my_address": "My Address",
+  "phone": "Phone",
+  "street": "Street",
+  "city": "City",
+  "state": "State",
+  "postal_code": "Postal Code",
+  "country": "Country",
+  "update_address": "Update Address",
+  "enter_phone": "Please enter a phone number",
+  "enter_street": "Please enter a street",
+  "enter_city": "Please enter a city",
+  "enter_state": "Please enter a state",
+  "enter_postal_code": "Please enter a postal code",
+  "enter_country": "Please enter a country",
 
+  "create_account_title": "Create your account",
+  "username": "Username",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "sign_up": "Sign Up",
+  "already_have_account": "Already have an account?",
+  "login_now": "Login now",
+  "passwords_not_match": "Passwords do not match",
+  "welcome_back": "Welcome back!",
+  "sign_in": "Sign In",
+  "or_continue_with": "Or continue with",
+  "not_a_member": "Not a member?",
+  "register_now": "Register now",
+  "google_login_failed": "Google login failed",
 
+  "upgrade": {
+    "title": "Upgrade Request",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "device_old": "Current Device",
+    "device_new": "New Device",
+    "note": "Note",
+    "submit": "Submit Request",
+    "success": "Request submitted successfully!",
+    "error": "Submission failed. Please try again.",
+    "required": "Please enter {{field}}"
+  },
 
+  "news": {
+    "title": "Technology News",
+    "no_news": "No news available.",
+    "open_fail": "Could not open the link"
+  },
 
+  "promotion": {
+    "title": "Latest Promotions",
+    "categories": {
+      "all": "All",
+      "iphone": "iPhone",
+      "ipad": "iPad",
+      "macbook": "MacBook"
+    },
+    "buy_now": "Buy Now",
+    "details": "Details",
+    "selected": "You selected: {{product}}",
+    "dialog": {
+      "original_price": "Original Price",
+      "discount_price": "Discounted",
+      "discount": "Save {{percent}}%",
+      "close": "Close"
+    }
+  },
 
-  
+  "exchange": {
+    "title": "Trade-in Program",
+    "hotline": "Hotline",
+    "banner": "Upgrade to iPhone 16 Series",
+    "new_price": "New Price",
+    "old_price": "Old Device Value",
+    "register": "Register Upgrade Now",
+    "categories": {
+      "iphone": "iPhone",
+      "ipad": "iPad",
+      "macbook": "Macbook"
+    }
+  },
 
+  "please_select_variant": "Please select a variant",
+  "select_up_to_two_variants": "You can select up to 2 variants",
+  "item_added": "Item added"
 }

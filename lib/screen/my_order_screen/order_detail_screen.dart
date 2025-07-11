@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:e_commerce_flutter/models/order.dart';
 import '../../utility/app_color.dart';
 
@@ -15,9 +16,9 @@ class OrderDetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 1,
         iconTheme: const IconThemeData(color: AppColor.darkOrange),
-        title: const Text(
-          'Order Details',
-          style: TextStyle(
+        title: Text(
+          'order_details'.tr(),
+          style: const TextStyle(
             color: AppColor.darkOrange,
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -30,17 +31,17 @@ class OrderDetailScreen extends StatelessWidget {
           _buildSectionCard(
             context,
             icon: Icons.receipt_long,
-            title: 'Order Information',
+            title: 'order_info'.tr(),
             children: [
-              _infoRow('Order ID', order.sId ?? 'N/A'),
-              _infoRow('Status', order.orderStatus ?? 'N/A'),
-              _infoRow('Order Date', order.orderDate ?? 'N/A'),
+              _infoRow('order_id'.tr(), order.sId ?? 'N/A'),
+              _infoRow('status'.tr(), order.orderStatus ?? 'N/A'),
+              _infoRow('order_date'.tr(), order.orderDate ?? 'N/A'),
             ],
           ),
           _buildSectionCard(
             context,
             icon: Icons.shopping_bag,
-            title: 'Purchased Products',
+            title: 'purchased_products'.tr(),
             children: [
               ...?order.items?.map(
                 (item) => Container(
@@ -58,11 +59,11 @@ class OrderDetailScreen extends StatelessWidget {
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16)),
                       const SizedBox(height: 4),
-                      Text('Quantity:  ${item.quantity}',
+                      Text('${'quantity'.tr()}: ${item.quantity}',
                           style: const TextStyle(fontSize: 16)),
-                      Text('Price:        ${item.price?.toStringAsFixed(0)}₫',
+                      Text('${'price'.tr()}: ${item.price?.toStringAsFixed(0)}₫',
                           style: const TextStyle(fontSize: 16)),
-                      Text('Variant:     ${item.variant ?? 'None'}',
+                      Text('${'variant'.tr()}: ${item.variant ?? 'None'}',
                           style: const TextStyle(fontSize: 16)),
                     ],
                   ),
@@ -73,25 +74,25 @@ class OrderDetailScreen extends StatelessWidget {
           _buildSectionCard(
             context,
             icon: Icons.payment,
-            title: 'Payment',
+            title: 'payment'.tr(),
             children: [
-              _infoRow('Method', order.paymentMethod ?? 'N/A'),
-              _infoRow('Subtotal',
+              _infoRow('method'.tr(), order.paymentMethod ?? 'N/A'),
+              _infoRow('subtotal'.tr(),
                   '${order.orderTotal?.subtotal?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRow('Discount',
+              _infoRow('discount'.tr(),
                   '-${order.orderTotal?.discount?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRowBold('Total',
+              _infoRowBold('total'.tr(),
                   '${order.orderTotal?.total?.toStringAsFixed(0) ?? '0'}₫',
                   color: Colors.redAccent),
               if (order.couponCode != null)
-                _infoRow('Coupon Code',
+                _infoRow('coupon_code'.tr(),
                     '${order.couponCode!.couponCode} (${order.couponCode!.discountAmount}% ${order.couponCode!.discountType})'),
             ],
           ),
           _buildSectionCard(
             context,
             icon: Icons.location_on,
-            title: 'Shipping Address',
+            title: 'shipping_address'.tr(),
             children: [
               Text(
                 '${order.shippingAddress?.street}, ${order.shippingAddress?.city}, ${order.shippingAddress?.state}',
@@ -103,7 +104,7 @@ class OrderDetailScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 4),
-              Text('Phone: ${order.shippingAddress?.phone}',
+              Text('${'phone'.tr()}: ${order.shippingAddress?.phone}',
                   style: const TextStyle(fontSize: 16)),
             ],
           ),
@@ -112,8 +113,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoRowBold(String label, String value,
-      {Color color = Colors.black}) {
+  Widget _infoRowBold(String label, String value, {Color color = Colors.black}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(

@@ -4,9 +4,10 @@ import 'package:e_commerce_flutter/screen/login_screen/signin_screen.dart';
 import 'package:e_commerce_flutter/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'components/my_button.dart';
 import 'components/my_textfield.dart';
-import '../../../models/auth_data.dart'; // 👈 import CustomLoginData
+import '../../../models/auth_data.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -18,10 +19,9 @@ class LoginScreen extends StatelessWidget {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
-    final loginData =
-        CustomLoginData(email: email, password: password); // ✅ dùng email
+    final loginData = CustomLoginData(email: email, password: password);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final error = await userProvider.login(loginData); // ✅ sử dụng login mới
+    final error = await userProvider.login(loginData);
 
     if (error == null) {
       Navigator.pushReplacement(
@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Google login failed')),
+        SnackBar(content: Text('google_login_failed'.tr())),
       );
     }
   }
@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                     size: 100, color: Colors.black87),
                 const SizedBox(height: 20),
                 Text(
-                  'Welcome back!',
+                  'welcome_back'.tr(),
                   style: TextStyle(
                     fontSize: 22,
                     color: Colors.grey[800],
@@ -72,18 +72,16 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // ✅ Email
                 MyTextField(
                   controller: emailController,
-                  hintText: 'Email',
+                  hintText: 'email'.tr(),
                   obscureText: false,
                 ),
                 const SizedBox(height: 15),
 
-                // ✅ Password
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Password',
+                  hintText: 'password'.tr(),
                   obscureText: true,
                 ),
                 const SizedBox(height: 10),
@@ -92,21 +90,21 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
-                          );
-                        },
-                        child: const Text('Quên mật khẩu?'),
-                      )
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ForgotPasswordScreen()),
+                        );
+                      },
+                      child: Text('forgot_password'.tr()),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 25),
 
-                // ✅ Sign In button
                 MyButton(
-                  text: "Sign In",
+                  text: "sign_in".tr(),
                   onTap: () => signUserIn(context),
                 ),
                 const SizedBox(height: 40),
@@ -115,9 +113,9 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Divider(thickness: 1, color: Colors.grey[400])),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text("Or continue with"),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text("or_continue_with".tr()),
                     ),
                     Expanded(
                         child: Divider(thickness: 1, color: Colors.grey[400])),
@@ -125,7 +123,6 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Google / FB Login
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -147,11 +144,10 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Register
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Not a member?',
+                    Text('not_a_member'.tr(),
                         style: TextStyle(color: Colors.grey[700])),
                     const SizedBox(width: 4),
                     GestureDetector(
@@ -161,9 +157,9 @@ class LoginScreen extends StatelessWidget {
                           MaterialPageRoute(builder: (_) => SignInScreen()),
                         );
                       },
-                      child: const Text(
-                        'Register now',
-                        style: TextStyle(
+                      child: Text(
+                        'register_now'.tr(),
+                        style: const TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
                     ),

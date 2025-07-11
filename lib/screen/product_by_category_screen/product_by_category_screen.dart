@@ -1,4 +1,6 @@
-import 'package:e_commerce_flutter/utility/extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart'; // 👈
 
 import '../../models/brand.dart';
 import '../../models/category.dart';
@@ -7,10 +9,9 @@ import 'provider/product_by_category_provider.dart';
 import '../../utility/app_color.dart';
 import '../../widget/custom_dropdown.dart';
 import '../../widget/multi_select_drop_down.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../widget/horizondal_list.dart';
 import '../../widget/product_grid_view.dart';
+import '../../utility/extensions.dart';
 
 class ProductByCategoryScreen extends StatelessWidget {
   final Category selectedCategory;
@@ -20,10 +21,10 @@ class ProductByCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
-      // ignore: use_build_context_synchronously
       context.proByCProvider
           .filterInitialProductAndSubCategory(selectedCategory);
     });
+
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -32,7 +33,7 @@ class ProductByCategoryScreen extends StatelessWidget {
               floating: true,
               snap: true,
               title: Text(
-                "${selectedCategory.name}",
+                selectedCategory.name ?? '',
                 style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -54,8 +55,8 @@ class ProductByCategoryScreen extends StatelessWidget {
                             Consumer<ProductByCategoryProvider>(
                               builder: (context, proByCatProvider, child) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10.0),
                                   child: HorizontalList(
                                     items: proByCatProvider.subCategories,
                                     itemToString: (SubCategory? val) =>
@@ -74,31 +75,38 @@ class ProductByCategoryScreen extends StatelessWidget {
                             ),
                             Row(
                               children: [
+                                // ─── Dropdown Sort by Price ───
                                 Expanded(
                                   child: CustomDropdown<String>(
-                                    hintText: 'Sort By Price',
-                                    items: const ['Low To High', 'High To Low'],
+                                    hintText: 'sort_by_price'.tr(),
+                                    items: [
+                                      'low_to_high'.tr(),
+                                      'high_to_low'.tr(),
+                                    ],
                                     onChanged: (val) {
-                                      if (val?.toLowerCase() == 'low to high') {
-                                        context.proByCProvider.sortProducts(ascending: true);
-                                       
+                                      if (val == 'low_to_high'.tr()) {
+                                        context.proByCProvider
+                                            .sortProducts(ascending: true);
                                       } else {
-                                          context.proByCProvider.sortProducts(ascending: false);
+                                        context.proByCProvider
+                                            .sortProducts(ascending: false);
                                       }
                                     },
                                     displayItem: (val) => val,
                                   ),
                                 ),
+
+                                // ─── Brand Filter ───
                                 Expanded(
                                   child: Consumer<ProductByCategoryProvider>(
-                                    builder:
-                                        (context, proByCatProvider, child) {
+                                    builder: (context, proByCatProvider, child) {
                                       return MultiSelectDropDown<Brand>(
-                                        hintText: 'Filter By Brands',
+                                        hintText: 'filter_by_brands'.tr(),
                                         items: proByCatProvider.brands,
                                         onSelectionChanged: (val) {
                                           proByCatProvider.selectedBrands = val;
-                                          context.proByCProvider.filterProductByBrand();
+                                          context.proByCProvider
+                                              .filterProductByBrand();
                                           proByCatProvider.updateUI();
                                         },
                                         displayItem: (val) => val.name ?? '',
@@ -118,6 +126,8 @@ class ProductByCategoryScreen extends StatelessWidget {
                 },
               ),
             ),
+
+            // ─── Product Grid ───
             SliverPadding(
               padding: const EdgeInsets.all(20),
               sliver: SliverToBoxAdapter(

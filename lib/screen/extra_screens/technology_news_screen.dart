@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TechnologyNewsScreen extends StatefulWidget {
@@ -11,8 +12,7 @@ class TechnologyNewsScreen extends StatefulWidget {
 }
 
 class _TechnologyNewsScreenState extends State<TechnologyNewsScreen> {
-  final String apiKey =
-      '95a20f4928ba4f5cad51b2df5076a8e4'; // 🔑 Thay bằng key thật
+  final String apiKey = '95a20f4928ba4f5cad51b2df5076a8e4'; // 🧪 Thay bằng key thật
   List<Article> _articles = [];
   bool _loading = true;
 
@@ -45,13 +45,13 @@ class _TechnologyNewsScreenState extends State<TechnologyNewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tin tức công nghệ'),
+        title: Text(tr('news.title')),
         centerTitle: true,
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _articles.isEmpty
-              ? const Center(child: Text('Không có tin tức.'))
+              ? Center(child: Text(tr('news.no_news')))
               : ListView.builder(
                   padding: const EdgeInsets.all(16),
                   itemCount: _articles.length,
@@ -93,19 +93,21 @@ class NewsTile extends StatelessWidget {
 
   const NewsTile({super.key, required this.article});
 
-  Future<void> _openUrl(String url) async {
+  Future<void> _openUrl(BuildContext context, String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
-      debugPrint('Không thể mở $url');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('news.open_fail'))),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _openUrl(article.url),
+      onTap: () => _openUrl(context, article.url),
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         child: Row(
