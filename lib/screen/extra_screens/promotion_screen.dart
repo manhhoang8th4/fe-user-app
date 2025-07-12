@@ -49,7 +49,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
       ),
       body: Column(
         children: [
-          // Category filter
+          // 🔘 Danh mục
           Container(
             height: 45,
             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -63,9 +63,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                   child: ChoiceChip(
                     label: Text(tr("promotion.categories.$cat")),
                     selected: isSelected,
-                    onSelected: (_) => setState(() {
-                      selectedCategory = cat;
-                    }),
+                    onSelected: (_) => setState(() => selectedCategory = cat),
                     selectedColor: Colors.pinkAccent,
                     labelStyle: TextStyle(
                       color: isSelected ? Colors.white : Colors.black,
@@ -76,7 +74,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
             ),
           ),
 
-          // Promotion list
+          // 📦 Danh sách khuyến mãi
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(12),
@@ -111,13 +109,21 @@ class _PromotionScreenState extends State<PromotionScreen> {
                                 children: [
                                   Text(promo["name"], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                   const SizedBox(height: 4),
-                                  Text("${promo["price"]}đ",
-                                      style: const TextStyle(
-                                          decoration: TextDecoration.lineThrough,
-                                          color: Colors.grey)),
-                                  Text("${promo["discountPrice"]}đ",
-                                      style: const TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red)),
+                                  Text(
+                                    "${promo["price"]}đ",
+                                    style: const TextStyle(
+                                      decoration: TextDecoration.lineThrough,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Text(
+                                    "${promo["discountPrice"]}đ",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -144,7 +150,9 @@ class _PromotionScreenState extends State<PromotionScreen> {
                             ElevatedButton.icon(
                               onPressed: () {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(tr("promotion.selected", args: [promo["name"]]))),
+                                  SnackBar(
+                                    content: Text(tr("promotion.selected", namedArgs: {"product": promo["name"]})),
+                                  ),
                                 );
                               },
                               icon: const Icon(Icons.shopping_cart),
@@ -165,7 +173,7 @@ class _PromotionScreenState extends State<PromotionScreen> {
                                         Text(
                                           "${tr("promotion.dialog.original_price")}: ${promo["price"]}đ\n"
                                           "${tr("promotion.dialog.discount_price")}: ${promo["discountPrice"]}đ\n"
-                                          "${tr("promotion.dialog.discount", args: [percent.toString()])}",
+                                          "${tr("promotion.dialog.discount", namedArgs: {"percent": percent.toString()})}",
                                         ),
                                       ],
                                     ),

@@ -4,7 +4,6 @@
   "start": "Bắt đầu",
   "home": "Trang chủ",
   "favorite": "Yêu thích",
-  "cart": "Giỏ hàng",
   "profile": "Tài khoản",
   "buy_now": "Mua ngay",
   "detail": "Chi tiết",
@@ -110,7 +109,7 @@
   "quantity": "Số lượng",
   "price": "Giá",
   "variant": "Phân loại",
-  "payment": "Thanh toán",
+  "paymnt": "Thanh toán",
   "method": "Phương thức",
   "subtotal": "Tạm tính",
   "discount": "Giảm giá",
@@ -235,5 +234,88 @@
   },
   "please_select_variant": "Vui lòng chọn một biến thể",
   "select_up_to_two_variants": "Bạn chỉ có thể chọn tối đa 2 biến thể",
-  "item_added": "Đã thêm vào giỏ hàng"
+  "item_added": "Đã thêm vào giỏ hàng",
+   "login": {
+    "failed": "Đăng nhập thất bại"
+  },
+  "register": {
+    "failed": "Đăng ký thất bại"
+  },
+  "google_login": {
+    "canceled": "Đăng nhập Google bị hủy.",
+    "failed": "Đăng nhập Google thất bại: {{msg}}",
+    "error": "Lỗi khi đăng nhập Google: {{msg}}"
+  },
+  "error": {
+    "general": "Đã xảy ra lỗi: {{msg}}"
+  },
+  "general": {
+    "all": "Tất cả"
+  },
+   "coupon": {
+    "enter_code": "Vui lòng nhập mã giảm giá",
+    "failed": "Xác thực mã giảm giá thất bại"
+  },
+  "order": {
+    "failed": "Thêm đơn hàng thất bại",
+    "description": "Mô tả giao dịch của bạn"
+  },
+  "error": {
+    "general": "Đã xảy ra lỗi: {}"
+  },
+  "stripe": {
+    "init_error": "Lỗi khởi tạo Stripe: {}",
+    "present_error": "Thanh toán Stripe thất bại: {}",
+    "success": "Thanh toán thành công",
+    "exception": "Lỗi Stripe: {}"
+  },
+  "razorpay": {
+    "failed": "Thanh toán Razorpay thất bại: {}",
+    "exception": "Lỗi Razorpay: {}"
+  },
+  "cart": {
+    "enter_address": "Nhập địa chỉ",
+    "total": "Tổng tiền",
+    "discount": "Giảm giá",
+    "grand_total": "Tổng thanh toán",
+    "complete_order": "Hoàn tất đơn hàng"
+  },
+  "payment": {
+    "cod": "Thanh toán khi nhận hàng",
+    "prepaid": "Thanh toán trước"
+  },
+  "form": {
+    "phone": "Số điện thoại",
+    "street": "Đường",
+    "city": "Thành phố",
+    "state": "Tỉnh/Bang",
+    "postal_code": "Mã bưu điện",
+    "country": "Quốc gia",
+    "error": {
+      "phone": "Vui lòng nhập số điện thoại",
+      "street": "Vui lòng nhập tên đường",
+      "city": "Vui lòng nhập thành phố",
+      "state": "Vui lòng nhập tỉnh/bang",
+      "postal_code": "Vui lòng nhập mã bưu điện",
+      "country": "Vui lòng nhập quốc gia"
+    }
+  },
+  "product": {
+    "select_up_to_two_variants": "Bạn chỉ có thể chọn tối đa hai phiên bản.",
+    "please_select_variant": "Vui lòng chọn ít nhất một phiên bản.",
+    "item_added": "Đã thêm sản phẩm vào giỏ hàng thành công."
+  },
+  "cart_bottom": {
+    "title": "Giỏ hàng"
+  },
+  "cart_coupon": {
+    "apply_coupon": "Áp dụng"
+  },
+  "home_drawer": {
+    "greeting": "👋 Xin chào!",
+    "welcome": "Chào mừng bạn"
+  },
+  "search": {
+    "hint": "Tìm kiếm..."
+  }
 }

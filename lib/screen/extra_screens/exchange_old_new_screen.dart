@@ -41,7 +41,8 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredProducts = products.where((item) => item['category'] == selectedCategory).toList();
+    final filteredProducts =
+        products.where((item) => item['category'] == selectedCategory).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +57,7 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
       ),
       body: Column(
         children: [
-          // Banner
+          // 📷 Banner
           Column(
             children: [
               Image.network(
@@ -71,7 +72,7 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
             ],
           ),
 
-          // Danh mục
+          // 🔘 Danh mục
           Container(
             height: 40,
             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -95,7 +96,7 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
             ),
           ),
 
-          // Danh sách sản phẩm
+          // 📦 Danh sách sản phẩm
           Expanded(
             child: ListView.builder(
               itemCount: filteredProducts.length,
@@ -111,8 +112,10 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text("${tr("exchange.new_price")}: ${product['price']}"),
-                        Text("${tr("exchange.old_price")}: ${product['old_price']}",
-                            style: const TextStyle(color: Colors.grey)),
+                        Text(
+                          "${tr("exchange.old_price")}: ${product['old_price']}",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
                       ],
                     ),
                   ),
@@ -121,7 +124,7 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
             ),
           ),
 
-          // Button đăng ký
+          // 📤 Nút đăng ký nâng cấp
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: SizedBox(

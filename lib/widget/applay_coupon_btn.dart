@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart'; // ✅ Add this
 
 class ApplyCouponButton extends StatelessWidget {
   final Function() onPressed;
@@ -20,7 +21,7 @@ class ApplyCouponButton extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       ),
-      child: const Text('Apply'),
+      child: Text('cart_coupon.apply_coupon'.tr()), // ✅ Use translation key
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart'; // ✅ ADD
 import '../provider/cart_provider.dart';
 import '../../../utility/extensions.dart';
 import '../../../widget/compleate_order_button.dart';
@@ -25,11 +26,14 @@ void showCustomBottomSheet(BuildContext context) {
               children: [
                 // Toggle Address Fields
                 ListTile(
-                  title: const Text('Enter Address'),
+                  title: Text('cart.enter_address'.tr()), // ✅
                   trailing: IconButton(
-                    icon: Icon(context.cartProvider.isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+                    icon: Icon(context.cartProvider.isExpanded
+                        ? Icons.arrow_drop_up
+                        : Icons.arrow_drop_down),
                     onPressed: () {
-                      context.cartProvider.isExpanded = !context.cartProvider.isExpanded;
+                      context.cartProvider.isExpanded =
+                          !context.cartProvider.isExpanded;
                       (context as Element).markNeedsBuild();
                     },
                   ),
@@ -58,53 +62,71 @@ void showCustomBottomSheet(BuildContext context) {
                           children: [
                             CustomTextField(
                               height: 65,
-                              labelText: 'Phone',
+                              labelText: 'form.phone'.tr(),
                               onSave: (value) {},
                               inputType: TextInputType.number,
-                              controller: context.cartProvider.phoneController,
-                              validator: (value) => value!.isEmpty ? 'Please enter a phone number' : null,
+                              controller:
+                                  context.cartProvider.phoneController,
+                              validator: (value) => value!.isEmpty
+                                  ? 'form.error.phone'.tr()
+                                  : null,
                             ),
                             CustomTextField(
                               height: 65,
-                              labelText: 'Street',
+                              labelText: 'form.street'.tr(),
                               onSave: (val) {},
-                              controller: context.cartProvider.streetController,
-                              validator: (value) => value!.isEmpty ? 'Please enter a street' : null,
+                              controller:
+                                  context.cartProvider.streetController,
+                              validator: (value) => value!.isEmpty
+                                  ? 'form.error.street'.tr()
+                                  : null,
                             ),
                             CustomTextField(
                               height: 65,
-                              labelText: 'City',
+                              labelText: 'form.city'.tr(),
                               onSave: (value) {},
-                              controller: context.cartProvider.cityController,
-                              validator: (value) => value!.isEmpty ? 'Please enter a city' : null,
+                              controller:
+                                  context.cartProvider.cityController,
+                              validator: (value) => value!.isEmpty
+                                  ? 'form.error.city'.tr()
+                                  : null,
                             ),
                             CustomTextField(
                               height: 65,
-                              labelText: 'State',
+                              labelText: 'form.state'.tr(),
                               onSave: (value) {},
-                              controller: context.cartProvider.stateController,
-                              validator: (value) => value!.isEmpty ? 'Please enter a state' : null,
+                              controller:
+                                  context.cartProvider.stateController,
+                              validator: (value) => value!.isEmpty
+                                  ? 'form.error.state'.tr()
+                                  : null,
                             ),
                             Row(
                               children: [
                                 Expanded(
                                   child: CustomTextField(
                                     height: 65,
-                                    labelText: 'Postal Code',
+                                    labelText: 'form.postal_code'.tr(),
                                     onSave: (value) {},
                                     inputType: TextInputType.number,
-                                    controller: context.cartProvider.postalCodeController,
-                                    validator: (value) => value!.isEmpty ? 'Please enter a code' : null,
+                                    controller: context
+                                        .cartProvider.postalCodeController,
+                                    validator: (value) => value!.isEmpty
+                                        ? 'form.error.postal_code'.tr()
+                                        : null,
                                   ),
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: CustomTextField(
                                     height: 65,
-                                    labelText: 'Country',
+                                    labelText: 'form.country'.tr(),
                                     onSave: (value) {},
-                                    controller: context.cartProvider.countryController,
-                                    validator: (value) => value!.isEmpty ? 'Please enter a country' : null,
+                                    controller: context
+                                        .cartProvider.countryController,
+                                    validator: (value) => value!.isEmpty
+                                        ? 'form.error.country'.tr()
+                                        : null,
                                   ),
                                 ),
                               ],
@@ -116,27 +138,30 @@ void showCustomBottomSheet(BuildContext context) {
                   },
                 ),
 
-                // Payment Options
+                // Payment Option
                 Consumer<CartProvider>(
                   builder: (context, cartProvider, child) {
                     return CustomDropdown<String>(
                         bgColor: Colors.white,
-                        hintText: cartProvider.selectedPaymentOption,
+                        hintText:
+                            'payment.${cartProvider.selectedPaymentOption}'.tr(),
                         items: const ['cod', 'prepaid'],
                         onChanged: (val) {
-                          cartProvider.selectedPaymentOption = val ?? 'prepaid';
+                          cartProvider.selectedPaymentOption =
+                              val ?? 'prepaid';
                           cartProvider.updateUI();
                         },
-                        displayItem: (val) => val);
+                        displayItem: (val) => 'payment.$val'.tr());
                   },
                 ),
+
                 // Coupon Code Field
                 Row(
                   children: [
                     Expanded(
                       child: CustomTextField(
                         height: 60,
-                        labelText: 'Enter Coupon code',
+                        labelText: 'coupon.enter_code'.tr(),
                         onSave: (value) {},
                         controller: context.cartProvider.couponController,
                       ),
@@ -146,7 +171,8 @@ void showCustomBottomSheet(BuildContext context) {
                     })
                   ],
                 ),
-                //? Text for Total Amount, Total Offer Applied, and Grand Total
+
+                // Tổng tiền
                 Container(
                   width: double.maxFinite,
                   decoration: BoxDecoration(
@@ -160,34 +186,47 @@ void showCustomBottomSheet(BuildContext context) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Total Amount             : \$${context.cartProvider.getCartSubTotal()}', 
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-                          Text('Total Offer Applied  : \$${cartProvider.couponCodeDiscount}',
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black)),
-                         Text('Grand Total            : \$${context.cartProvider.getGrandTotal()}', 
-                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue)),
+                          Text(
+                              '${'cart.total'.tr()} : \$${cartProvider.getCartSubTotal()}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          Text(
+                              '${'cart.discount'.tr()} : \$${cartProvider.couponCodeDiscount}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          Text(
+                              '${'cart.grand_total'.tr()} : \$${cartProvider.getGrandTotal()}',
+                              style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue)),
                         ],
                       );
                     },
                   ),
                 ),
                 const Divider(),
-                //? Pay Button
+                // Button
                 Consumer<CartProvider>(
                   builder: (context, cartProvider, child) {
                     return CompleteOrderButton(
-                        labelText: 'Complete Order  \$${context.cartProvider.getGrandTotal()} ', 
+                        labelText:
+                            '${'cart.complete_order'.tr()} \$${cartProvider.getGrandTotal()}',
                         onPressed: () {
-                          if (!cartProvider.isExpanded) { 
+                          if (!cartProvider.isExpanded) {
                             cartProvider.isExpanded = true;
                             cartProvider.updateUI();
                             return;
                           }
-                          // Check if the form is valid
-                          if (context.cartProvider.buyNowFormKey.currentState!.validate()) {
-                            context.cartProvider.buyNowFormKey.currentState!.save();
+                          if (context.cartProvider.buyNowFormKey.currentState!
+                              .validate()) {
+                            context.cartProvider.buyNowFormKey.currentState!
+                                .save();
                             context.cartProvider.submitOrder(context);
-                            return;
                           }
                         });
                   },

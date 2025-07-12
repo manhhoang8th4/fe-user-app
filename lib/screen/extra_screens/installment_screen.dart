@@ -19,7 +19,7 @@ class InstallmentScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Mô tả tổng quát
+            // 📝 Mô tả tổng quát
             Text(
               tr('installment.description_title'),
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -32,7 +32,7 @@ class InstallmentScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Hình thức trả góp
+            // 💳 Hình thức trả góp
             Text(
               tr('installment.method_title'),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -44,7 +44,7 @@ class InstallmentScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Bảng mô phỏng
+            // 📊 Bảng mô phỏng
             Text(
               tr('installment.example_title'),
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -81,7 +81,7 @@ class InstallmentScreen extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            // Nút đăng ký
+            // ☎️ Nút đăng ký
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

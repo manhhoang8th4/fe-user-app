@@ -40,6 +40,7 @@ void main() async {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => DataProvider()),
+          ChangeNotifierProvider(create: (_) => ForgotPasswordProvider()),
           ChangeNotifierProvider(create: (c) => UserProvider(c.dataProvider)),
           ChangeNotifierProvider(
               create: (c) => ProfileProvider(c.dataProvider)),
@@ -51,7 +52,6 @@ void main() async {
           ChangeNotifierProvider(
               create: (c) => FavoriteProvider(c.dataProvider)),
           ChangeNotifierProvider(create: (_) => ChangePasswordProvider()),
-          
         ],
         child: const MyApp(),
       ),

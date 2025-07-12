@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:easy_localization/easy_localization.dart'; // 👈 Thêm import
 class CustomSearchBar extends StatefulWidget {
   final TextEditingController controller;
   final void Function(String)? onChanged;
@@ -52,8 +52,8 @@ class CustomSearchBarState extends State<CustomSearchBar> {
                 child: TextField(
                   focusNode: _focusNode,
                   controller: widget.controller,
-                  decoration: const InputDecoration(
-                    hintText: 'Search...',
+                  decoration: InputDecoration(
+                    hintText: 'search.hint'.tr(), // 👈 Sử dụng EasyLocalization
                     border: InputBorder.none,
                   ),
                   autofocus: false,

@@ -14,6 +14,7 @@ import '../../../core/data/data_provider.dart';
 import '../../../models/api_response.dart';
 import '../../../utility/constants.dart';
 import '../../../utility/snack_bar_helper.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CartProvider extends ChangeNotifier {
   HttpService service = HttpService();
@@ -38,40 +39,35 @@ class CartProvider extends ChangeNotifier {
   String selectedPaymentOption = 'prepaid';
 
   CartProvider(this._userProvider);
-  //getCartItems
+
   getCartItems() {
     myCartItems = flutterCart.cartItemsList;
     notifyListeners();
   }
 
-  //updateCart
   void updateCart(CartModel cartItem, int quantity) {
     quantity = cartItem.quantity + quantity;
     flutterCart.updateQuantity(cartItem.productId, cartItem.variants, quantity);
     notifyListeners();
   }
 
-  // getCartSubTotal
   double getCartSubTotal() {
     return flutterCart.subtotal;
   }
 
-  //clearCartItems
   clearCartItems() {
     flutterCart.clearCart();
     notifyListeners();
   }
 
-  //getGrandTotal
   double getGrandTotal() {
     return getCartSubTotal() - couponCodeDiscount;
   }
 
-  //checkCoupon
   checkCoupon() async {
     try {
       if (couponController.text.isEmpty) {
-        SnackBarHelper.showErrorSnackBar('Enter a coupon code');
+        SnackBarHelper.showErrorSnackBar(tr('coupon.enter_code'));
         return;
       }
       List<String> productIds =
@@ -93,25 +89,24 @@ class CartProvider extends ChangeNotifier {
             couponApplied = coupon;
             couponCodeDiscount = getCouponDiscountAmount(coupon);
           }
-          SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+          SnackBarHelper.showSuccessSnackBar(tr(apiResponse.message));
           log('Coupon is valid');
         } else {
           SnackBarHelper.showErrorSnackBar(
-              'Failed to validate Coupon: ${apiResponse.message}');
+              '${tr('coupon.failed')}: ${tr(apiResponse.message)}');
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
-            'Error ${response.body?['message'] ?? response.statusText}');
+            'Error ${tr(response.body?['message']?.toString() ?? response.statusText ?? '')}');
       }
       notifyListeners();
     } catch (e) {
       print(e);
-      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      SnackBarHelper.showErrorSnackBar(tr('error.general', args: [e.toString()]));
       rethrow;
     }
   }
 
-  //getCouponDiscountAmount
   double getCouponDiscountAmount(Coupon coupon) {
     double discountAmount = 0;
     String discountType = coupon.discountType ?? 'fixed';
@@ -126,7 +121,6 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  //addOrder
   addOrder(BuildContext context) async {
     try {
       Map<String, dynamic> order = {
@@ -155,28 +149,26 @@ class CartProvider extends ChangeNotifier {
       if (response.isOk) {
         ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
         if (apiResponse.success == true) {
-          SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+          SnackBarHelper.showSuccessSnackBar(tr(apiResponse.message));
           log('Order added');
           clearCouponDiscount();
           clearCartItems();
-          // ignore: use_build_context_synchronously
           Navigator.pop(context);
         } else {
           SnackBarHelper.showErrorSnackBar(
-              'Failed to add Order: ${apiResponse.message}');
+              '${tr('order.failed')}: ${tr(apiResponse.message)}');
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
-            'Error ${response.body?['message'] ?? response.statusText}');
+            'Error ${tr(response.body?['message']?.toString() ?? response.statusText ?? '')}');
       }
     } catch (e) {
       print(e);
-      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      SnackBarHelper.showErrorSnackBar(tr('error.general', args: [e.toString()]));
       rethrow;
     }
   }
 
-  //cartItemToOrderItem
   List<Map<String, dynamic>> cartItemToOrderItem(List<CartModel> cartItems) {
     return cartItems.map((cartItem) {
       return {
@@ -189,7 +181,6 @@ class CartProvider extends ChangeNotifier {
     }).toList();
   }
 
-  //submitOrder
   Future<void> submitOrder(BuildContext context) async {
     try {
       if (selectedPaymentOption == 'cod') {
@@ -201,7 +192,7 @@ class CartProvider extends ChangeNotifier {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Order error: $e')),
+        SnackBar(content: Text(tr('error.general', args: [e.toString()]))),
       );
     }
   }
@@ -236,9 +227,9 @@ class CartProvider extends ChangeNotifier {
           'postal_code': postalCodeController.text,
           'country': 'US',
         },
-        'amount': (getGrandTotal() * 100).round(), // phải >0
+        'amount': (getGrandTotal() * 100).round(),
         'currency': 'usd',
-        'description': 'Your transaction description here',
+        'description': tr('order.description'),
       };
       final resp = await service.addItem(
         endpointUrl: 'payment/stripe',
@@ -246,7 +237,6 @@ class CartProvider extends ChangeNotifier {
       );
       final Map<String, dynamic> data =
           resp.body is String ? jsonDecode(resp.body) : resp.body;
-      debugPrint('🔑 From BE: $data');
 
       final publishableKey = data['publishableKey'] as String;
       final paymentIntent = data['paymentIntent'] as String;
@@ -262,7 +252,7 @@ class CartProvider extends ChangeNotifier {
             customerId: customerId,
             merchantDisplayName: 'MOBIZATE',
             billingDetails: BillingDetails(
-              email: _userProvider.getLoginUsr()?.name,
+              email: _userProvider.getLoginUsr()?.email,
               name: _userProvider.getLoginUsr()?.name,
               phone: '1234567890',
               address: Address(
@@ -277,24 +267,19 @@ class CartProvider extends ChangeNotifier {
             style: ThemeMode.light,
           ),
         );
-        debugPrint('✅ initPaymentSheet DONE');
       } on StripeException catch (e) {
-        debugPrint('❌ initPaymentSheet ERR: ${e.error.localizedMessage}');
-        _snack('Init‑sheet: ${e.error.localizedMessage}');
+        _snack(tr('stripe.init_error', args: [e.error.localizedMessage ?? '']));
         return;
       }
       try {
         await Stripe.instance.presentPaymentSheet();
-        debugPrint('🎉 PAY SUCCESS');
-        _snack('Payment success');
-        operation(); // gọi callback
+        _snack(tr('stripe.success'));
+        operation();
       } on StripeException catch (e) {
-        debugPrint('❌ presentPaymentSheet ERR: ${e.error.localizedMessage}');
-        _snack('PaymentSheet: ${e.error.localizedMessage}');
+        _snack(tr('stripe.present_error', args: [e.error.localizedMessage ?? '']));
       }
     } catch (e, s) {
-      debugPrint('❌ OUTER error: $e\n$s');
-      _snack('Exception: $e');
+      _snack(tr('stripe.exception', args: [e.toString()]));
     }
   }
 
@@ -313,10 +298,10 @@ class CartProvider extends ChangeNotifier {
           'amount': getGrandTotal() * 100,
           'name': "user",
           "currency": 'INR',
-          'description': 'Your transaction description',
+          'description': tr('order.description'),
           'send_sms_hash': true,
           "prefill": {
-            "email": _userProvider.getLoginUsr()?.name,
+            "email": _userProvider.getLoginUsr()?.email,
             "contact": ''
           },
           "theme": {'color': '#FFE64A'},
@@ -331,12 +316,13 @@ class CartProvider extends ChangeNotifier {
         });
         razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
             (PaymentFailureResponse response) {
-          SnackBarHelper.showErrorSnackBar('Error ${response.message}');
+          SnackBarHelper.showErrorSnackBar(
+              tr('razorpay.failed', args: [response.message ?? '']));
           return;
         });
       }
     } catch (e) {
-      SnackBarHelper.showErrorSnackBar('Error$e');
+      SnackBarHelper.showErrorSnackBar(tr('razorpay.exception', args: [e.toString()]));
       return;
     }
   }

@@ -4,7 +4,6 @@
   "start": "Get Started",
   "home": "Home",
   "favorite": "Favorite",
-  "cart": "Cart",
   "profile": "Profile",
   "buy_now": "Buy Now",
   "detail": "Detail",
@@ -21,7 +20,6 @@
   "services": "Services",
   "apple_warranty": "Apple Warranty",
   "exchange_old_new": "Exchange Old for New",
-  "installment": "Installment",
   "newsfeed": "Newsfeed",
   "technology_news": "Technology News",
   "apple_warranty_policy_title": "Apple Warranty Policy at ShopDunk",
@@ -49,7 +47,6 @@
   "Fashion": "Fashion",
   "Electronics": "Electronics",
 
-  "forgot_password": "Forgot password?",
   "forgot_password_screen": {
     "title": "Forgot Password",
     "instruction": "Enter your email to reset your password",
@@ -59,6 +56,15 @@
     "error_invalid": "Invalid email format",
     "sent_to": "A reset link has been sent to {0}"
   },
+  "forgot_password": {
+  "title": "Forgot Password",
+  "instruction": "Enter your email to reset your password",
+  "email": "Email",
+  "submit": "Send Request",
+  "error_empty": "Please enter your email",
+  "error_invalid": "Invalid email format",
+  "sent_to": "A reset link has been sent to {0}"
+},
 
   "change_password": "Change Password",
   "greeting": "Hello Sina",
@@ -86,7 +92,6 @@
   "quantity": "Quantity",
   "price": "Price",
   "variant": "Variant",
-  "payment": "Payment",
   "method": "Method",
   "subtotal": "Subtotal",
   "discount": "Discount",
@@ -176,5 +181,110 @@
 
   "please_select_variant": "Please select a variant",
   "select_up_to_two_variants": "You can select up to 2 variants",
-  "item_added": "Item added"
+  "item_added": "Item added",
+  "email": "Email",
+"installment": {
+  "title": "Installment Plan",
+  "description_title": "Installment Purchase at ShopDunk",
+  "description": "Customers can purchase with 0% interest installment. Simple procedure and fast approval.",
+  "method_title": "Installment Methods",
+  "methods": {
+    "card": "0% via Credit Card (Visa/Mastercard)",
+    "finance": "Through financial companies (Home Credit, FE Credit, etc.)",
+    "terms": "Short term: 3-12 months"
+  },
+  "example_title": "Example installment plan:",
+  "columns": {
+    "term": "Term",
+    "monthly": "Monthly Payment",
+    "total": "Total Payment"
+  },
+  "button": "Register for Installment",
+  "dialog": {
+    "title": "Contact Support",
+    "content": "Call our hotline for installment support?",
+    "cancel": "Cancel",
+    "call": "Call Now"
+  }
+},
+ "login": {
+    "failed": "Failed to login"
+  },
+  "register": {
+    "failed": "Failed to register"
+  },
+  "google_login": {
+    "canceled": "Google login was cancelled.",
+    "failed": "Google login failed: {{msg}}",
+    "error": "Google login error: {{msg}}"
+  },
+   "general": {
+    "all": "All"
+  },
+    "coupon": {
+    "enter_code": "Enter a coupon code",
+    "failed": "Coupon validation failed"
+  },
+  "order": {
+    "failed": "Failed to add Order",
+    "description": "Your transaction description"
+  },
+  "error": {
+    "general": "An error occurred: {}"
+  },
+  "stripe": {
+    "init_error": "Stripe initialization error: {}",
+    "present_error": "Stripe payment failed: {}",
+    "success": "Payment successful",
+    "exception": "Stripe exception: {}"
+  },
+  "razorpay": {
+    "failed": "Razorpay payment failed: {}",
+    "exception": "Razorpay error: {}"
+  },
+   "cart": {
+    "enter_address": "Enter Address",
+    "total": "Total Amount",
+    "discount": "Total Offer Applied",
+    "grand_total": "Grand Total",
+    "complete_order": "Complete Order"
+  },
+  "payment": {
+    "cod": "Cash on Delivery",
+    "prepaid": "Prepaid"
+  },
+  "form": {
+    "phone": "Phone",
+    "street": "Street",
+    "city": "City",
+    "state": "State",
+    "postal_code": "Postal Code",
+    "country": "Country",
+    "error": {
+      "phone": "Please enter a phone number",
+      "street": "Please enter a street",
+      "city": "Please enter a city",
+      "state": "Please enter a state",
+      "postal_code": "Please enter a postal code",
+      "country": "Please enter a country"
+    }
+  },
+   "product": {
+    "select_up_to_two_variants": "You can select up to two variants only.",
+    "please_select_variant": "Please select at least one variant.",
+    "item_added": "Item added to cart successfully."
+  },
+  "cart_bottom": {
+    "title": "Cart"
+  },
+  "cart_coupon": {
+    "apply_coupon": "Apply"
+  },
+  "home_drawer": {
+    "greeting": "👋 Hello!",
+    "welcome": "Welcome to us"
+  },
+  "search": {
+    "hint": "Search..."
+  }
 }

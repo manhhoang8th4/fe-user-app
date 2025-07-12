@@ -10,11 +10,16 @@ class AppleWarrantyScreen extends StatelessWidget {
     const phoneNumber = '0868004667';
     const zaloNumber = '0868004667';
 
-    final services = List<String>.from(tr('warranty.services', args: [], namedArgs: {}, gender: null).split('|'));
+    final services = [
+      tr('check_apple_warranty'),
+      tr('guide_official_warranty'),
+      tr('repair_apple_device'),
+      tr('warranty_consultation'),
+    ];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('warranty.title')),
+        title: Text(tr('apple_warranty_policy_title')),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -34,19 +39,14 @@ class AppleWarrantyScreen extends StatelessWidget {
 
             // 📝 Mô tả
             Text(
-              tr('warranty.description_title'),
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              tr('warranty.description'),
+              tr('apple_warranty_policy_description'),
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 20),
 
             // ✅ Dịch vụ hỗ trợ
             Text(
-              tr('warranty.services_title'),
+              tr('apple_warranty_services'),
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
@@ -60,7 +60,7 @@ class AppleWarrantyScreen extends StatelessWidget {
               children: [
                 ElevatedButton.icon(
                   icon: const Icon(Icons.phone),
-                  label: Text(tr('warranty.call')),
+                  label: Text(tr('call_now')),
                   onPressed: () async {
                     final uri = Uri.parse('tel:$phoneNumber');
                     if (await canLaunchUrl(uri)) await launchUrl(uri);
@@ -69,7 +69,7 @@ class AppleWarrantyScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.sms),
-                  label: Text(tr('warranty.sms')),
+                  label: Text(tr('send_sms')),
                   onPressed: () async {
                     final uri = Uri.parse('sms:$phoneNumber');
                     if (await canLaunchUrl(uri)) await launchUrl(uri);
@@ -78,7 +78,7 @@ class AppleWarrantyScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.chat),
-                  label: Text(tr('warranty.zalo')),
+                  label: Text(tr('chat_zalo')),
                   onPressed: () async {
                     final uri = Uri.parse('https://zalo.me/$zaloNumber');
                     if (await canLaunchUrl(uri)) {

@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error)),
+        SnackBar(content: Text(error.toString())),
       );
     }
   }
@@ -94,11 +94,11 @@ class LoginScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgotPasswordScreen()),
+                            builder: (_) => const ForgotPasswordScreen(),
+                          ),
                         );
                       },
-                      child: Text('forgot_password'.tr()),
+                      child: Text('forgot_password.title'.tr()), // ✅ ĐÃ SỬA
                     ),
                   ],
                 ),
@@ -113,13 +113,15 @@ class LoginScreen extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                        child: Divider(thickness: 1, color: Colors.grey[400])),
+                      child: Divider(thickness: 1, color: Colors.grey[400]),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text("or_continue_with".tr()),
                     ),
                     Expanded(
-                        child: Divider(thickness: 1, color: Colors.grey[400])),
+                      child: Divider(thickness: 1, color: Colors.grey[400]),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 30),
@@ -132,7 +134,8 @@ class LoginScreen extends StatelessWidget {
                       child: const CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.white,
-                        backgroundImage: AssetImage('assets/images/google.png'),
+                        backgroundImage:
+                            AssetImage('assets/images/google.png'),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -161,7 +164,9 @@ class LoginScreen extends StatelessWidget {
                       child: Text(
                         'register_now'.tr(),
                         style: const TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

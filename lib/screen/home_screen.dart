@@ -42,25 +42,25 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             BottomNavyBarItem(
               icon: const Icon(Icons.home),
-              title: Text('home'.tr()),
+              title: Text('home.title'.tr()),
               activeColor: Colors.deepOrange,
               inactiveColor: Colors.grey,
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.favorite),
-              title: Text('favorite'.tr()),
+              title: Text('favorite.title'.tr()),
               activeColor: Colors.red,
               inactiveColor: Colors.grey,
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.shopping_cart),
-              title: Text('cart'.tr()),
+              title: Text('cart_bottom.title'.tr()),
               activeColor: Colors.green,
               inactiveColor: Colors.grey,
             ),
             BottomNavyBarItem(
               icon: const Icon(Icons.person),
-              title: Text('profile'.tr()),
+              title: Text('profile.title'.tr()),
               activeColor: Colors.deepOrange,
               inactiveColor: Colors.grey,
             ),
@@ -120,44 +120,51 @@ class _AppDrawerState extends State<AppDrawer>
             _buildHeader(context),
             const SizedBox(height: 12),
             _buildExpandableTile(
-              title: 'services'.tr(),
+              title: 'services.title'.tr(),
               icon: Icons.build_rounded,
               expanded: showServices,
               onTap: () => setState(() => showServices = !showServices),
               children: [
                 _drawerSubItem(
-                    'apple_warranty'.tr(), Icons.verified_user_outlined, () {
-                  _navigateTo(const AppleWarrantyScreen());
-                }),
-                _drawerSubItem('exchange_old_new'.tr(), Icons.sync_alt, () {
-                  _navigateTo(const ExchangeOldNewScreen());
-                }),
-                _drawerSubItem('installment'.tr(), Icons.payments_outlined, () {
-                  _navigateTo(const InstallmentScreen());
-                }),
+                  'apple_warranty.title'.tr(),
+                  Icons.verified_user_outlined,
+                  () => _navigateTo(const AppleWarrantyScreen()),
+                ),
+                _drawerSubItem(
+                  'exchange_old_new.title'.tr(),
+                  Icons.sync_alt,
+                  () => _navigateTo(const ExchangeOldNewScreen()),
+                ),
+                _drawerSubItem(
+                  'installment.title'.tr(),
+                  Icons.payments_outlined,
+                  () => _navigateTo(const InstallmentScreen()),
+                ),
               ],
             ),
             const Divider(thickness: 1, indent: 20, endIndent: 20),
             _buildExpandableTile(
-              title: 'newsfeed'.tr(),
+              title: 'newsfeed.title'.tr(),
               icon: Icons.newspaper_outlined,
               expanded: showNewsfeed,
               onTap: () => setState(() => showNewsfeed = !showNewsfeed),
               children: [
-                _drawerSubItem('technology_news'.tr(), Icons.memory_outlined,
-                    () {
-                  _navigateTo(const TechnologyNewsScreen());
-                }),
-                _drawerSubItem('promotion'.tr(), Icons.local_offer_outlined,
-                    () {
-                  _navigateTo(const PromotionScreen());
-                }),
+                _drawerSubItem(
+                  'technology_news.title'.tr(),
+                  Icons.memory_outlined,
+                  () => _navigateTo(const TechnologyNewsScreen()),
+                ),
+                _drawerSubItem(
+                  'promotion.title'.tr(), // ✅ SỬA Ở ĐÂY
+                  Icons.local_offer_outlined,
+                  () => _navigateTo(const PromotionScreen()),
+                ),
               ],
             ),
             const Divider(thickness: 1, indent: 20, endIndent: 20),
             _buildSimpleItem(
               icon: Icons.language_outlined,
-              text: 'language'.tr(),
+              text: 'language.title'.tr(),
               onTap: () => _navigateTo(const LanguageSelectorScreen()),
             ),
           ],
@@ -165,8 +172,7 @@ class _AppDrawerState extends State<AppDrawer>
       ),
     );
   }
-
-  Widget _buildHeader(BuildContext context) {
+    Widget _buildHeader(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -222,53 +228,54 @@ class _AppDrawerState extends State<AppDrawer>
             ),
             const SizedBox(width: 16),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '👋 Xin chào!',
-                  style: TextStyle(
-                      color: Colors.black.withOpacity(0.85), fontSize: 14),
-                ),
-                const Text(
-                  'Đã đến với chúng tôi',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            )
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      'home_drawer.greeting'.tr(), // 👈 Sử dụng key thay vì text cố định
+      style: TextStyle(
+        color: Colors.black.withOpacity(0.85),
+        fontSize: 14,
+      ),
+    ),
+    Text(
+      'home_drawer.welcome'.tr(), // 👈 Sử dụng key thay vì text cố định
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+  ],
+)
           ],
         ),
       ),
     );
   }
+Widget _buildExpandableTile({
+    required String title,
+    required IconData icon,
+    required bool expanded,
+    required VoidCallback onTap,
+    required List<Widget> children,
+  }) {
+    return ExpansionTile(
+      leading: Icon(icon, color: Colors.deepOrange),
+      title: Text(title),
+      initiallyExpanded: expanded,
+      onExpansionChanged: (_) => onTap(),
+      children: children,
+    );
+  }
 
-  Widget _drawerSubItem(String text, IconData icon, VoidCallback onTap) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        splashColor: Colors.deepOrange.withOpacity(0.15),
-        highlightColor: Colors.deepOrangeAccent.withOpacity(0.1),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          child: Row(
-            children: [
-              Icon(icon, color: Colors.deepOrange[400]),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  text,
-                  style: const TextStyle(fontSize: 14),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+  Widget _drawerSubItem(String title, IconData icon, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.deepOrangeAccent),
+      title: Text(title),
+      onTap: () {
+        Navigator.of(context).pop(); // Đóng drawer
+        onTap();
+      },
     );
   }
 
@@ -278,58 +285,18 @@ class _AppDrawerState extends State<AppDrawer>
     required VoidCallback onTap,
   }) {
     return ListTile(
-      leading: Icon(icon, color: Colors.deepOrange[700]),
-      title: Text(text, style: const TextStyle(fontSize: 16)),
-      onTap: onTap,
-      hoverColor: Colors.deepOrange.withOpacity(0.08),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    );
-  }
-
-  Widget _buildExpandableTile({
-    required String title,
-    required IconData icon,
-    required bool expanded,
-    required VoidCallback onTap,
-    required List<Widget> children,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 2,
-        shadowColor: Colors.deepOrange.withOpacity(0.1),
-        child: Theme(
-          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0, end: expanded ? 1 : 0),
-            duration: const Duration(milliseconds: 300),
-            builder: (context, value, child) {
-              return ExpansionTile(
-                initiallyExpanded: expanded,
-                leading: Icon(icon, color: Colors.deepOrange[400]),
-                trailing: Transform.rotate(
-                  angle: value * 3.14,
-                  child: const Icon(Icons.expand_more, color: Colors.grey),
-                ),
-                title: Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-                childrenPadding: const EdgeInsets.only(left: 8),
-                onExpansionChanged: (_) => onTap(),
-                children: children,
-              );
-            },
-          ),
-        ),
-      ),
+      leading: Icon(icon, color: Colors.deepOrange),
+      title: Text(text),
+      onTap: () {
+        Navigator.of(context).pop(); // Đóng drawer
+        onTap();
+      },
     );
   }
 
   void _navigateTo(Widget screen) {
-    Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => screen),
+    );
   }
 }
