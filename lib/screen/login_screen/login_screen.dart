@@ -94,7 +94,8 @@ class LoginScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ForgotPasswordScreen()),
+                              builder: (context) =>
+                                  const ForgotPasswordScreen()),
                         );
                       },
                       child: Text('forgot_password'.tr()),
