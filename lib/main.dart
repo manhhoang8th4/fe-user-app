@@ -154,22 +154,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final loginUser = context.userProvider.getLoginUsr();
 
-    return Obx(() => GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          scrollBehavior: const MaterialScrollBehavior().copyWith(
-            dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
-          ),
-          theme: AppTheme.lightAppTheme,
-          darkTheme: AppTheme.darkAppTheme,
-          themeMode: themeController.theme,
+   return Obx(() => GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
+      ),
+      theme: AppTheme.lightAppTheme,
+      darkTheme: AppTheme.darkAppTheme,
+      themeMode: themeController.theme,
 
-          // ✅ Localization
-          locale: context.locale,
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
+      // ✅ Localization
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
 
           home: loginUser?.sId == null ? LoginScreen() : const HomeScreen(),
-        ));
+    ));
   }
 }
 
