@@ -17,7 +17,7 @@ class OrderDetailScreen extends StatelessWidget {
         elevation: 1,
         iconTheme: const IconThemeData(color: AppColor.darkOrange),
         title: Text(
-          'order_details'.tr(),
+          'order_details.title'.tr(),
           style: const TextStyle(
             color: AppColor.darkOrange,
             fontSize: 22,
@@ -31,17 +31,17 @@ class OrderDetailScreen extends StatelessWidget {
           _buildSectionCard(
             context,
             icon: Icons.receipt_long,
-            title: 'order_info'.tr(),
+            title: 'order_info.title'.tr(),
             children: [
-              _infoRow('order_id'.tr(), order.sId ?? 'N/A'),
-              _infoRow('status'.tr(), order.orderStatus ?? 'N/A'),
-              _infoRow('order_date'.tr(), order.orderDate ?? 'N/A'),
+              _infoRow('order_id.title'.tr(), order.sId ?? 'N/A'),
+              _infoRow('status.title'.tr(), order.orderStatus ?? 'N/A'),
+              _infoRow('order_date.title'.tr(), order.orderDate ?? 'N/A'),
             ],
           ),
           _buildSectionCard(
             context,
             icon: Icons.shopping_bag,
-            title: 'purchased_products'.tr(),
+            title: 'purchased_products.title'.tr(),
             children: [
               ...?order.items?.map(
                 (item) => Container(
@@ -59,11 +59,11 @@ class OrderDetailScreen extends StatelessWidget {
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16)),
                       const SizedBox(height: 4),
-                      Text('${'quantity'.tr()}: ${item.quantity}',
+                      Text('${'quantity.title'.tr()}: ${item.quantity}',
                           style: const TextStyle(fontSize: 16)),
-                      Text('${'price'.tr()}: ${item.price?.toStringAsFixed(0)}₫',
+                      Text('${'price.title'.tr()}: ${item.price?.toStringAsFixed(0)}₫',
                           style: const TextStyle(fontSize: 16)),
-                      Text('${'variant'.tr()}: ${item.variant ?? 'None'}',
+                      Text('${'variant.title'.tr()}: ${item.variant ?? 'None.title'}',
                           style: const TextStyle(fontSize: 16)),
                     ],
                   ),
@@ -74,25 +74,25 @@ class OrderDetailScreen extends StatelessWidget {
           _buildSectionCard(
             context,
             icon: Icons.payment,
-            title: 'payment'.tr(),
+            title: 'payment.title'.tr(),
             children: [
-              _infoRow('method'.tr(), order.paymentMethod ?? 'N/A'),
+              _infoRow('method.title'.tr(), order.paymentMethod ?? 'N/A'),
               _infoRow('subtotal'.tr(),
                   '${order.orderTotal?.subtotal?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRow('discount'.tr(),
+              _infoRow('discount.title'.tr(),
                   '-${order.orderTotal?.discount?.toStringAsFixed(0) ?? '0'}₫'),
-              _infoRowBold('total'.tr(),
+              _infoRowBold('total.title'.tr(),
                   '${order.orderTotal?.total?.toStringAsFixed(0) ?? '0'}₫',
                   color: Colors.redAccent),
               if (order.couponCode != null)
-                _infoRow('coupon_code'.tr(),
+                _infoRow('coupon_code.title'.tr(),
                     '${order.couponCode!.couponCode} (${order.couponCode!.discountAmount}% ${order.couponCode!.discountType})'),
             ],
           ),
           _buildSectionCard(
             context,
             icon: Icons.location_on,
-            title: 'shipping_address'.tr(),
+            title: 'shipping_address.title'.tr(),
             children: [
               Text(
                 '${order.shippingAddress?.street}, ${order.shippingAddress?.city}, ${order.shippingAddress?.state}',
@@ -104,7 +104,7 @@ class OrderDetailScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 4),
-              Text('${'phone'.tr()}: ${order.shippingAddress?.phone}',
+              Text('${'phone.title'.tr()}: ${order.shippingAddress?.phone}',
                   style: const TextStyle(fontSize: 16)),
             ],
           ),
