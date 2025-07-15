@@ -18,21 +18,21 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
   final List<Map<String, String>> products = [
     {
       'name': 'iPhone 15 Pro Max',
-      'image': 'https://cdn.tgdd.vn/Products/Images/42/305659/iphone-15-pro-max-1-2-3.jpg',
+      'image': 'https://shopdunk.com/images/thumbs/0024371_iphone-15-pro-max_240.png',
       'price': '20.050.000đ',
       'old_price': '13.000.000đ',
       'category': 'iphone',
     },
     {
       'name': 'iPhone 15 Pro',
-      'image': 'https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-1-2-3.jpg',
+      'image': 'https://shopdunk.com/images/thumbs/0029976_iphone-15-pro_240.png',
       'price': '16.950.000đ',
       'old_price': '11.000.000đ',
       'category': 'iphone',
     },
     {
       'name': 'iPhone 14 Pro',
-      'image': 'https://cdn.tgdd.vn/Products/Images/42/303891/iphone-14-pro.jpg',
+      'image': 'https://shopdunk.com/images/thumbs/0018589_iphone-14-pro_240.webp',
       'price': '12.550.000đ',
       'old_price': '8.000.000đ',
       'category': 'iphone',
@@ -49,19 +49,19 @@ class _ExchangeOldNewScreenState extends State<ExchangeOldNewScreen> {
         title: Text(tr("exchange.title")),
         backgroundColor: Colors.pinkAccent,
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => launchUrl(Uri.parse("tel:19001234")),
-        label: Text(tr("exchange.hotline")),
-        icon: const Icon(Icons.phone),
-        backgroundColor: Colors.pinkAccent,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () => launchUrl(Uri.parse("tel:19001234")),
+      //   label: Text(tr("exchange.hotline")),
+      //   icon: const Icon(Icons.phone),
+      //   backgroundColor: Colors.pinkAccent,
+      // ),
       body: Column(
         children: [
           // 📷 Banner
           Column(
             children: [
               Image.network(
-                'https://cdn.mobilecity.vn/mobilecity-vn/images/2023/09/banner-iphone-15-pro-max.jpg',
+                'https://shopdunk.com/images/uploaded/banner/Banner%202025/thang2/T2_1/Danh%20mu%CC%A3c.jpg',
                 fit: BoxFit.cover,
               ),
               const SizedBox(height: 8),

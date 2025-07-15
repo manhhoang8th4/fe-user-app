@@ -74,7 +74,7 @@ class OrderDetailScreen extends StatelessWidget {
           _buildSectionCard(
             context,
             icon: Icons.payment,
-            title: 'payment.title'.tr(),
+            title: 'payment_order.title'.tr(),
             children: [
               _infoRow('method.title'.tr(), order.paymentMethod ?? 'N/A'),
               _infoRow('subtotal'.tr(),

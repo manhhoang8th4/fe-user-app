@@ -317,5 +317,14 @@
   },
   "search": {
     "hint": "Tìm kiếm..."
+  },
+  "cart_emty": {
+    "empty": "Giỏ hàng trống"
+  },
+  "payment_order": {
+    "title": "Thông tin thanh toán"
+  },
+  "pending_order":{
+    "title": "chưa giải quyết"
   }
 }

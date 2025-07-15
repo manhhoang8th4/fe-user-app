@@ -29,7 +29,7 @@ class MyOrderScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          easy_localization.tr('my_orders'), // Sử dụng easy_localization rõ ràng
+          easy_localization.tr('my_orders.title'), // Sử dụng easy_localization rõ ràng
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -48,7 +48,7 @@ class MyOrderScreen extends StatelessWidget {
                   Get.to(OrderDetailScreen(order: order));
                 },
                 onDoubleTap: () {
-                  if (order.orderStatus == 'shipped') {
+                  if (order.orderStatus == 'shipped.title') {
                     Get.to(TrackingScreen(url: order.trackingUrl ?? ''));
                   }
                 },
@@ -57,7 +57,7 @@ class MyOrderScreen extends StatelessWidget {
                   items:
                       '${(order.items.safeElementAt(0)?.productName ?? '')} & ${order.items!.length - 1} ${easy_localization.tr("items")}',
                   date: order.orderDate ?? '',
-                  status: order.orderStatus ?? 'pending',
+                  status: order.orderStatus ?? 'pending_order.title',
                   onTap: null,
                 ),
               );

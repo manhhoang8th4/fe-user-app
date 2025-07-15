@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart'; // ✅ thêm dòng này
 
 class EmptyCart extends StatelessWidget {
   const EmptyCart({super.key});
@@ -13,10 +14,10 @@ class EmptyCart extends StatelessWidget {
               child: Image.asset('assets/images/empty_cart.png'),
             ),
           ),
-          const Text(
-            "Empty cart",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          )
+          Text(
+            "cart_emty.empty".tr(), // ✅ chỉ thêm tr() vào
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         ],
       ),
     );

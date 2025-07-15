@@ -15,21 +15,21 @@ class _PromotionScreenState extends State<PromotionScreen> {
   final List<Map<String, dynamic>> promotions = [
     {
       "name": "iPhone 15 Pro Max",
-      "image": "https://cdn.tgdd.vn/Products/Images/42/305659/iphone-15-pro-max-1-2-3.jpg",
+      "image": "https://shopdunk.com/images/thumbs/0024371_iphone-15-pro-max_240.png",
       "price": 30000000,
       "discountPrice": 20050000,
       "category": "iphone",
     },
     {
       "name": "iPad Pro 2024",
-      "image": "https://cdn.tgdd.vn/Products/Images/522/305660/ipad-pro-m4.jpg",
+      "image": "https://shopdunk.com/images/thumbs/0038080_ipad-pro-11-2024-m4-wifi-256gb_240.jpeg",
       "price": 25000000,
       "discountPrice": 19490000,
       "category": "ipad",
     },
     {
       "name": "MacBook Air M3",
-      "image": "https://cdn.tgdd.vn/Products/Images/44/315525/macbook-air-m3.jpg",
+      "image": "https://shopdunk.com/images/thumbs/0032184_macbook-air-m3-15-inch-2024-16gb-ram-256gb-ssd_240.jpeg",
       "price": 35000000,
       "discountPrice": 29900000,
       "category": "macbook",

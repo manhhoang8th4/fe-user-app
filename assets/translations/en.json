@@ -286,5 +286,13 @@
   },
   "search": {
     "hint": "Search..."
+  },
+  "payment_order":"payment ",
+  "cart_emty": {
+    "empty": "Empty cart"
+  },
+  "pending_order" :{
+    "title": "Pending"
   }
+  
 }
