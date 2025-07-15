@@ -52,6 +52,10 @@ void main() async {
           ChangeNotifierProvider(
               create: (c) => FavoriteProvider(c.dataProvider)),
           ChangeNotifierProvider(create: (_) => ChangePasswordProvider()),
+<<<<<<< HEAD
+=======
+          ChangeNotifierProvider(create: (_) => ForgotPasswordProvider()),
+>>>>>>> b1812fb (big update by manhcr7)
         ],
         child: const MyApp(),
       ),

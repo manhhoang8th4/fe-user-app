@@ -17,7 +17,7 @@ class ForgotPasswordProvider extends ChangeNotifier {
 
       final response = await http.post(
         Uri.parse(
-            'http://10.0.2.2:3000/users/forgot-password'), // 👈 Cập nhật đúng URL
+            'http://localhost:3000/users/forgot-password'), // 👈 Cập nhật đúng URL
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email}),
       );
